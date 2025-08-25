@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { CreateTaskInput } from '@/types'
 import { TaskService } from '@/lib/tasks'
+import { CreateTaskInput } from '@/types'
 
 interface CreateTaskFormProps {
   onTaskCreated: () => void
@@ -15,40 +15,56 @@ export default function CreateTaskForm({ onTaskCreated }: CreateTaskFormProps) {
     due_date: ''
   })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!formData.title.trim()) {
+      setError('Task title is required')
+      return
+    }
+
     setLoading(true)
-    setError('')
+    setError(null)
 
     try {
-      const newTask = await TaskService.createTask(formData)
-      if (newTask) {
-        setFormData({ title: '', description: '', due_date: '' })
-        onTaskCreated()
-      } else {
-        setError('Failed to create task. Please try again.')
-      }
+      await TaskService.createTask(formData)
+      setFormData({ title: '', description: '', due_date: '' })
+      onTaskCreated()
     } catch (err) {
-      setError('An error occurred while creating the task.')
+      setError(err instanceof Error ? err.message : 'Failed to create task')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    if (error) setError(null)
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Create New Task</h3>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-red-800 dark:text-red-200">{error}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {/* Title Input */}
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="title" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
             Task Title *
           </label>
           <input
@@ -56,30 +72,32 @@ export default function CreateTaskForm({ onTaskCreated }: CreateTaskFormProps) {
             id="title"
             name="title"
             value={formData.title}
-            onChange={handleInputChange}
+            onChange={handleChange}
+            placeholder="Enter task title..."
+            className="w-full px-4 py-3 text-gray-900 bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200 placeholder-gray-500 dark:placeholder-gray-400"
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
-            placeholder="Enter task title"
           />
         </div>
 
+        {/* Description Input */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="description" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
             Description
           </label>
           <textarea
             id="description"
             name="description"
             value={formData.description}
-            onChange={handleInputChange}
+            onChange={handleChange}
+            placeholder="Add task description (optional)..."
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
-            placeholder="Enter task description (optional)"
+            className="w-full px-4 py-3 text-gray-900 bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200 placeholder-gray-500 dark:placeholder-gray-400 resize-none"
           />
         </div>
 
+        {/* Due Date Input */}
         <div>
-          <label htmlFor="due_date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="due_date" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
             Due Date
           </label>
           <input
@@ -87,25 +105,37 @@ export default function CreateTaskForm({ onTaskCreated }: CreateTaskFormProps) {
             id="due_date"
             name="due_date"
             value={formData.due_date}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
+            onChange={handleChange}
+            className="w-full px-4 py-3 text-gray-900 bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200"
           />
         </div>
+      </div>
 
-        {error && (
-          <div className="text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
-            {error}
-          </div>
-        )}
-
+      {/* Submit Button */}
+      <div className="flex justify-end pt-4">
         <button
           type="submit"
-          disabled={loading || !formData.title.trim()}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          disabled={loading}
+          className="inline-flex items-center px-8 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 disabled:cursor-not-allowed disabled:transform-none"
         >
-          {loading ? 'Creating...' : 'Create Task'}
+          {loading ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Creating...
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Create Task
+            </>
+          )}
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
