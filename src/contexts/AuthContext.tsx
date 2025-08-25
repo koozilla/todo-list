@@ -16,6 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   const refreshUser = async () => {
     try {
@@ -46,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    setMounted(true)
     // Check authentication status on mount
     refreshUser()
 
@@ -63,8 +65,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setupAuthListener()
   }, [])
 
+  // Provide safe default values during SSR
+  const contextValue: AuthContextType = {
+    user: mounted ? user : null,
+    loading: mounted ? loading : true,
+    signOut,
+    refreshUser
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, refreshUser }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   )
@@ -73,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within a AuthProvider')
   }
   return context
 }

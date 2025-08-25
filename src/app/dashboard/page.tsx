@@ -97,7 +97,7 @@ export default function DashboardPage() {
             </Link>
             <Link
               href="/auth/register"
-              className="inline-flex items-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-base font-medium rounded-full shadow-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition-all duration-200"
+              className="inline-flex items-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-base font-medium rounded-md shadow-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition-all duration-200"
             >
               Create Account
             </Link>
@@ -106,6 +106,11 @@ export default function DashboardPage() {
       </div>
     )
   }
+
+  // Safety check for user properties
+  const userEmail = user?.email || 'User'
+  const userInitial = userEmail.charAt(0).toUpperCase()
+  const userName = userEmail.split('@')[0] || 'User'
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -153,11 +158,11 @@ export default function DashboardPage() {
                 >
                   <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
-                      {user.email?.charAt(0).toUpperCase()}
+                      {userInitial}
                     </span>
                   </div>
                   <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {user.email?.split('@')[0]}
+                    {userName}
                   </span>
                   <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -168,7 +173,7 @@ export default function DashboardPage() {
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{userEmail}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
                     </div>
                     <button

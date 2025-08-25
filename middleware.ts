@@ -44,6 +44,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
+  // If user is authenticated and visiting the home page, redirect to dashboard
+  if (user && request.nextUrl.pathname === '/') {
+    const redirectUrl = new URL('/dashboard', request.url)
+    return NextResponse.redirect(redirectUrl)
+  }
+
   return supabaseResponse
 }
 

@@ -24,14 +24,8 @@ export class AuthService {
     try {
       // Get the correct URL for the current environment
       const getRedirectURL = () => {
-        // In production, use the environment variable or fallback to current origin
-        if (process.env.NODE_ENV === 'production') {
-          // Try to use Vercel's auto-generated URL first
-          return process.env.NEXT_PUBLIC_VERCEL_URL 
-            ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/auth/callback`
-            : `${window.location.origin}/auth/callback`
-        }
-        // In development, use localhost
+        // Always use window.location.origin for local development
+        // This ensures we use the correct localhost port
         return `${window.location.origin}/auth/callback`
       }
 

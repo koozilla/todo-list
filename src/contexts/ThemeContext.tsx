@@ -18,36 +18,43 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true)
     // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem('theme') as Theme
-    if (savedTheme) {
-      setTheme(savedTheme)
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark')
+    try {
+      const savedTheme = localStorage.getItem('theme') as Theme
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        setTheme(savedTheme)
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark')
+      }
+    } catch (error) {
+      console.warn('Could not access localStorage or matchMedia:', error)
+      // Fallback to light theme
+      setTheme('light')
     }
   }, [])
 
   useEffect(() => {
     if (!mounted) return
     
-    // Update document class and save preference
-    const root = document.documentElement
-    if (theme === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
+    try {
+      // Update document class and save preference
+      const root = document.documentElement
+      if (theme === 'dark') {
+        root.classList.add('dark')
+      } else {
+        root.classList.remove('dark')
+      }
+      localStorage.setItem('theme', theme)
+    } catch (error) {
+      console.warn('Could not update theme:', error)
     }
-    localStorage.setItem('theme', theme)
   }, [theme, mounted])
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light')
   }
 
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>
-  }
-
+  // Return children immediately to prevent hydration issues
+  // The theme will be applied once mounted
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
