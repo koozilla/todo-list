@@ -20,6 +20,7 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState<SortOption>('created_at')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
   useEffect(() => {
     async function getUser() {
@@ -89,6 +90,13 @@ export default function DashboardPage() {
     setShowUserMenu(!showUserMenu)
   }
 
+  const toggleSearch = () => {
+    setShowSearch(!showSearch)
+    if (showSearch) {
+      setSearchQuery('') // Clear search when hiding
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -132,18 +140,24 @@ export default function DashboardPage() {
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Left side - Logo and Search */}
+            {/* Left side - Logo */}
             <div className="flex items-center space-x-6 flex-1">
               <Logo size="sm" />
-              
-              {/* Search Bar */}
-              <div className="hidden md:block flex-1 max-w-lg">
-                <TaskSearch onSearch={handleSearch} placeholder="Search tasks..." />
-              </div>
             </div>
 
             {/* Right side - Actions and User */}
             <div className="flex items-center space-x-4">
+              {/* Search Button */}
+              <button
+                onClick={toggleSearch}
+                className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                {showSearch ? 'Hide Search' : 'Search'}
+              </button>
+
               {/* Create Task Button */}
               <button
                 onClick={() => setShowCreateForm(!showCreateForm)}
@@ -200,10 +214,14 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Mobile Search (hidden on desktop) */}
-        <div className="md:hidden mb-6">
-          <TaskSearch onSearch={handleSearch} placeholder="Search tasks..." />
-        </div>
+        {/* Search Bar (shown when search mode is active) */}
+        {showSearch && (
+          <div className="mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
+              <TaskSearch onSearch={handleSearch} placeholder="Search tasks..." />
+            </div>
+          </div>
+        )}
 
         {/* Create Task Form */}
         {showCreateForm && (
@@ -218,24 +236,26 @@ export default function DashboardPage() {
         {/* Controls Bar */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <div className="flex flex-wrap items-center gap-4">
-            {/* Filter Tabs */}
-            <div className="flex space-x-1">
-              {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                    activeFilter === filter
-                      ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  {filter === 'all' && 'All Tasks'}
-                  {filter === 'pending' && 'Pending'}
-                  {filter === 'completed' && 'Completed'}
-                </button>
-              ))}
-            </div>
+            {/* Filter Tabs - Hidden when in search mode */}
+            {!showSearch && (
+              <div className="flex space-x-1">
+                {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                      activeFilter === filter
+                        ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    {filter === 'all' && 'All Tasks'}
+                    {filter === 'pending' && 'Pending'}
+                    {filter === 'completed' && 'Completed'}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Sort Controls */}
             <div className="flex-shrink-0">
