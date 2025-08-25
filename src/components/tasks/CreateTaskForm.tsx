@@ -106,7 +106,9 @@ export default function CreateTaskForm({ onTaskCreated }: CreateTaskFormProps) {
             name="due_date"
             value={formData.due_date}
             onChange={handleChange}
-            className="w-full px-4 py-3 text-gray-900 bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200"
+            min={new Date().toISOString().split('T')[0]}
+            step="1"
+            className="w-full px-4 py-3 text-gray-900 bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200 cursor-pointer"
           />
         </div>
       </div>
