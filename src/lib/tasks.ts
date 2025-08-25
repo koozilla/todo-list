@@ -31,6 +31,8 @@ export class TaskService {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
+      console.log('Getting tasks for user:', user.id, 'with filter:', filter)
+
       let query = supabase
         .from('tasks')
         .select('*')
@@ -45,6 +47,8 @@ export class TaskService {
       }
 
       const { data, error } = await query
+
+      console.log('Supabase response:', { data, error })
 
       if (error) throw error
       return data || []

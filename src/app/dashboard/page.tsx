@@ -41,11 +41,14 @@ export default function DashboardPage() {
 
   const handleTaskCreated = () => {
     setShowCreateForm(false)
-    // TaskList will automatically refresh due to onTasksChange
+    // Force a refresh by changing the filter temporarily
+    setActiveFilter('pending')
+    setTimeout(() => setActiveFilter('all'), 100)
   }
 
   const handleTasksChange = () => {
     // This will trigger a refresh of the task list
+    console.log('Tasks changed, should refresh')
   }
 
   if (loading) {

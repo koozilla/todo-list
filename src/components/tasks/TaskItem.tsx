@@ -81,7 +81,24 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
     })
   }
 
-  const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.is_completed
+  const isOverdue = task.due_date && !task.is_completed && (() => {
+    const dueDate = new Date(task.due_date)
+    const today = new Date()
+    // Reset time to start of day for accurate comparison
+    today.setHours(0, 0, 0, 0)
+    dueDate.setHours(0, 0, 0, 0)
+    
+    // Debug logging
+    console.log('Task overdue check:', {
+      taskTitle: task.title,
+      dueDate: task.due_date,
+      dueDateObj: dueDate,
+      today: today,
+      isOverdue: dueDate < today
+    })
+    
+    return dueDate < today
+  })()
 
   return (
     <div className={`bg-white rounded-lg shadow-sm border ${
@@ -121,21 +138,21 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
                 type="text"
                 value={editData.title}
                 onChange={(e) => setEditData(prev => ({ ...prev, title: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
                 placeholder="Task title"
               />
               <textarea
                 value={editData.description}
                 onChange={(e) => setEditData(prev => ({ ...prev, description: e.target.value }))}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
                 placeholder="Description (optional)"
               />
               <input
                 type="date"
                 value={editData.due_date}
                 onChange={(e) => setEditData(prev => ({ ...prev, due_date: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
               />
               <div className="flex space-x-2">
                 <button

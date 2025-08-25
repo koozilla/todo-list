@@ -24,9 +24,12 @@ export default function TaskList({ filter, onTasksChange }: TaskListProps) {
     setError('')
     
     try {
+      console.log('Loading tasks with filter:', filter)
       const fetchedTasks = await TaskService.getTasks(filter)
+      console.log('Fetched tasks:', fetchedTasks)
       setTasks(fetchedTasks)
     } catch (err) {
+      console.error('Error loading tasks:', err)
       setError('Failed to load tasks')
     } finally {
       setLoading(false)
