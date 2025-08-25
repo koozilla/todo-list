@@ -80,6 +80,7 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 ### Phase 4: Polish & Deployment 🔄
 - [x] Add dark mode toggle with theme context
 - [x] Improve UI styling and dark mode support
+- [x] Fix dark mode compatibility issues and Tailwind CSS setup
 - [ ] Deploy on Vercel (frontend) + Supabase (backend)
 - [x] Write comprehensive documentation for usage
 
@@ -118,11 +119,13 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - **Loading States** - smooth user experience
 - **Advanced Search** - debounced search by title/description
 - **Smart Sorting** - multiple sort options with visual indicators
-- **Dark Mode Support** - complete theme switching system
+- **Dark Mode Support** - complete theme switching system with persistent preferences
 - **Enhanced Styling** - beautiful UI in both light and dark themes
+- **Responsive Design** - optimized for all device sizes
 
 ### 🔄 In Progress
 - **Phase 4 Deployment** - deploy to Vercel and production setup
+- **Final Testing** - ensure all features work in production environment
 
 ### 📱 Current Pages
 - `/` - Landing page (Next.js default)
@@ -151,6 +154,13 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - **Cross-platform**: Responsive web app (desktop + mobile)
 
 ## 🚀 Getting Started
+
+### Recent Fixes & Improvements ✅
+- **Dark Mode Issues Resolved** - Fixed Tailwind CSS compatibility and theme switching
+- **Tailwind CSS v3.4.0** - Upgraded from unstable v4 alpha to stable production version
+- **PostCSS Configuration** - Added proper build pipeline for CSS processing
+- **Hydration Issues Fixed** - Improved theme context to prevent React hydration mismatches
+- **CSS Syntax Standardized** - Consistent Tailwind CSS directives and configuration
 
 ### Prerequisites
 - Node.js 18+ (we're using v22.18.0 LTS)
