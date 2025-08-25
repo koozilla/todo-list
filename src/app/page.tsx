@@ -30,10 +30,6 @@ export default function HomePage() {
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-20">
         <div className="text-center">
-          <div className="mb-8">
-            <Logo size="lg" className="mx-auto" />
-          </div>
-          
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Organize Your Life,
             <span className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
