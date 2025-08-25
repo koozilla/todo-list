@@ -82,7 +82,26 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
   }
 
   // Check if task is overdue
-  const isOverdue = task.due_date && !task.is_completed && new Date(task.due_date) < new Date(new Date().setHours(0, 0, 0, 0))
+  const isOverdue = task.due_date && !task.is_completed && (() => {
+    const today = new Date()
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const dueDate = new Date(task.due_date)
+    const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
+    
+    // Debug logging
+    if (task.due_date) {
+      console.log('Task overdue check:', {
+        taskTitle: task.title,
+        dueDate: task.due_date,
+        dueDateOnly: dueDateOnly.toISOString().split('T')[0],
+        todayDate: todayDate.toISOString().split('T')[0],
+        isOverdue: dueDateOnly < todayDate,
+        isCompleted: task.is_completed
+      })
+    }
+    
+    return dueDateOnly < todayDate
+  })()
 
   if (isEditing) {
     return (
