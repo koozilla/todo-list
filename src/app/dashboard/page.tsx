@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { AuthService } from '@/lib/auth'
-import { User, TaskFilter } from '@/types'
+import { TaskFilter } from '@/types'
 import Link from 'next/link'
 import CreateTaskForm from '@/components/tasks/CreateTaskForm'
 import TaskList from '@/components/tasks/TaskList'
@@ -10,10 +9,10 @@ import TaskSearch from '@/components/tasks/TaskSearch'
 import TaskSort, { SortOption, SortDirection } from '@/components/tasks/TaskSort'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 import Logo from '@/components/ui/Logo'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { user, loading, signOut } = useAuth()
   const [activeFilter, setActiveFilter] = useState<TaskFilter>('pending')
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -22,22 +21,7 @@ export default function DashboardPage() {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const currentUser = await AuthService.getCurrentUser()
-        if (currentUser) {
-          setUser(currentUser)
-        }
-      } catch (error) {
-        console.error('Error getting user:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    getUser()
-  }, [])
+  // No need for manual auth check - AuthContext handles this
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -52,18 +36,7 @@ export default function DashboardPage() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const handleSignOut = async () => {
-    try {
-      const result = await AuthService.signOut()
-      if (result.success) {
-        window.location.href = '/'
-      } else {
-        console.error('Sign out error:', result.error)
-      }
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
+  // handleSignOut is now provided by AuthContext
 
   const handleTaskCreated = () => {
     setShowCreateForm(false)
@@ -199,7 +172,7 @@ export default function DashboardPage() {
                       <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
                     </div>
                     <button
-                      onClick={handleSignOut}
+                      onClick={signOut}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                       Sign out

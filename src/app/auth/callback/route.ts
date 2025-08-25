@@ -32,7 +32,15 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    await supabase.auth.exchangeCodeForSession(code)
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (error) {
+      console.error('OAuth callback error:', error)
+      // Redirect to login page if there's an error
+      return NextResponse.redirect(requestUrl.origin + "/auth/login?error=oauth_failed")
+    }
+    
+    console.log('OAuth callback: Session established successfully')
   }
 
   // URL to redirect to after sign in process completes
