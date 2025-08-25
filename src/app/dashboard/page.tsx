@@ -236,26 +236,24 @@ export default function DashboardPage() {
         {/* Controls Bar */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <div className="flex flex-wrap items-center gap-4">
-            {/* Filter Tabs - Hidden when in search mode */}
-            {!showSearch && (
-              <div className="flex space-x-1">
-                {(['pending', 'completed', 'all'] as TaskFilter[]).map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => setActiveFilter(filter)}
-                    className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      activeFilter === filter
-                        ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    {filter === 'pending' && 'Active'}
-                    {filter === 'completed' && 'Completed'}
-                    {filter === 'all' && 'All Tasks'}
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* Filter Tabs - Always visible */}
+            <div className="flex space-x-1">
+              {(['pending', 'completed', 'all'] as TaskFilter[]).map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                    activeFilter === filter
+                      ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {filter === 'pending' && 'Active'}
+                  {filter === 'completed' && 'Completed'}
+                  {filter === 'all' && 'All Tasks'}
+                </button>
+              ))}
+            </div>
 
             {/* Sort Controls */}
             <div className="flex-shrink-0">
