@@ -73,10 +73,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto"></div>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-300 font-medium">Loading your workspace...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Loading...</p>
         </div>
       </div>
     )
@@ -84,7 +84,7 @@ export default function DashboardPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-6">
           <Logo size="lg" className="mx-auto mb-8" />
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Not Authenticated</h1>
@@ -109,122 +109,124 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
-      {/* Navigation Header */}
-      <nav className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center">
-              <Logo size="md" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Gmail-Style Header */}
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Left side - Logo and Search */}
+            <div className="flex items-center space-x-6 flex-1">
+              <Logo size="sm" />
+              
+              {/* Search Bar */}
+              <div className="hidden md:block flex-1 max-w-lg">
+                <TaskSearch onSearch={handleSearch} placeholder="Search tasks..." />
+              </div>
             </div>
-            <div className="flex items-center space-x-6">
+
+            {/* Right side - Actions and User */}
+            <div className="flex items-center space-x-4">
+              {/* Create Task Button */}
+              <button
+                onClick={() => setShowCreateForm(!showCreateForm)}
+                className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                {showCreateForm ? 'Cancel' : 'New Task'}
+              </button>
+
+              {/* Theme Toggle */}
               <ThemeToggle />
-              <div className="flex items-center space-x-4">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
-                </div>
-                <button
-                  onClick={handleSignOut}
-                  className="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                >
-                  Sign Out
+
+              {/* User Menu */}
+              <div className="relative">
+                <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user.email?.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {user.email?.split('@')[0]}
+                  </span>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                  <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  >
+                    Sign out
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Welcome back, {user.email?.split('@')[0]}! 👋
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Stay organized and boost your productivity with your personal task management system
-          </p>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <div className="flex-1">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setShowCreateForm(!showCreateForm)}
-                  className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700"
-                >
-                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  {showCreateForm ? 'Cancel' : 'Create New Task'}
-                </button>
-                {showCreateForm && (
-                  <span className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
-                    ✨ Quick task creation mode
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Mobile Search (hidden on desktop) */}
+        <div className="md:hidden mb-6">
+          <TaskSearch onSearch={handleSearch} placeholder="Search tasks..." />
         </div>
 
         {/* Create Task Form */}
         {showCreateForm && (
-          <div className="mb-12">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Create New Task</h3>
+          <div className="mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Task</h3>
               <CreateTaskForm onTaskCreated={handleTaskCreated} />
             </div>
           </div>
         )}
 
-        {/* Search and Sort Controls */}
-        <div className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-              <div className="flex-1 max-w-md">
-                <TaskSearch onSearch={handleSearch} placeholder="Search tasks by title or description..." />
-              </div>
-              <div className="flex-shrink-0">
-                <TaskSort
-                  sortBy={sortBy}
-                  sortDirection={sortDirection}
-                  onSortChange={handleSortChange}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Filter Tabs */}
-        <div className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-2">
-            <nav className="flex space-x-2">
+        {/* Controls Bar */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Filter Tabs */}
+            <div className="flex space-x-1">
               {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm capitalize transition-all duration-200 ${
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                     activeFilter === filter
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+                      ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  {filter === 'all' && '📋 All Tasks'}
-                  {filter === 'pending' && '⏳ Pending'}
-                  {filter === 'completed' && '✅ Completed'}
+                  {filter === 'all' && 'All Tasks'}
+                  {filter === 'pending' && 'Pending'}
+                  {filter === 'completed' && 'Completed'}
                 </button>
               ))}
-            </nav>
+            </div>
+
+            {/* Sort Controls */}
+            <div className="flex-shrink-0">
+              <TaskSort
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                onSortChange={handleSortChange}
+              />
+            </div>
           </div>
         </div>
 
         {/* Task List */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
           <TaskList
             filter={activeFilter}
             searchQuery={searchQuery}
