@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { User } from '@/types'
+import { User, TaskFilter } from '@/types'
 import Link from 'next/link'
+import CreateTaskForm from '@/components/tasks/CreateTaskForm'
+import TaskList from '@/components/tasks/TaskList'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [activeFilter, setActiveFilter] = useState<TaskFilter>('all')
+  const [showCreateForm, setShowCreateForm] = useState(false)
 
   useEffect(() => {
     async function getUser() {
@@ -33,6 +37,15 @@ export default function DashboardPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     window.location.href = '/'
+  }
+
+  const handleTaskCreated = () => {
+    setShowCreateForm(false)
+    // TaskList will automatically refresh due to onTasksChange
+  }
+
+  const handleTasksChange = () => {
+    // This will trigger a refresh of the task list
   }
 
   if (loading) {
@@ -86,20 +99,54 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Welcome to Your Dashboard!</h2>
-              <p className="text-gray-600 mb-6">Your tasks will appear here soon.</p>
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-4 max-w-md">
-                <h3 className="text-sm font-medium text-blue-800 mb-2">Next Steps:</h3>
-                <ul className="text-sm text-blue-700 space-y-1">
-                  <li>• Create your first task</li>
-                  <li>• Organize tasks by status</li>
-                  <li>• Set due dates and priorities</li>
-                </ul>
+          {/* Header Section */}
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">My Tasks</h2>
+                <p className="mt-1 text-sm text-gray-600">Manage and organize your daily tasks</p>
+              </div>
+              <div className="mt-4 sm:mt-0">
+                <button
+                  onClick={() => setShowCreateForm(!showCreateForm)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  {showCreateForm ? 'Cancel' : 'Add New Task'}
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Create Task Form */}
+          {showCreateForm && (
+            <div className="mb-8">
+              <CreateTaskForm onTaskCreated={handleTaskCreated} />
+            </div>
+          )}
+
+          {/* Filter Tabs */}
+          <div className="mb-6">
+            <div className="border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8">
+                {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm capitalize ${
+                      activeFilter === filter
+                        ? 'border-indigo-500 text-indigo-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Task List */}
+          <TaskList filter={activeFilter} onTasksChange={handleTasksChange} />
         </div>
       </main>
     </div>
