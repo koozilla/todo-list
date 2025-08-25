@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Task, TaskFilter } from '@/types'
 import { TaskService } from '@/lib/tasks'
 import TaskItem from './TaskItem'
@@ -19,11 +19,7 @@ export default function TaskList({ filter, searchQuery, sortBy, sortDirection, o
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    loadTasks()
-  }, [filter, searchQuery, sortBy, sortDirection])
-
-  const loadTasks = async () => {
+  const loadTasks = useCallback(async () => {
     setLoading(true)
     setError('')
     
@@ -38,7 +34,11 @@ export default function TaskList({ filter, searchQuery, sortBy, sortDirection, o
     } finally {
       setLoading(false)
     }
-  }
+  }, [filter, searchQuery, sortBy, sortDirection])
+
+  useEffect(() => {
+    loadTasks()
+  }, [loadTasks])
 
   const handleTaskUpdated = () => {
     loadTasks()

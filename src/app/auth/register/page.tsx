@@ -41,7 +41,7 @@ export default function RegisterPage() {
           text: result.error || 'Registration failed' 
         })
       }
-    } catch (err) {
+    } catch {
       setMessage({ 
         type: 'error', 
         text: 'An unexpected error occurred. Please try again.' 

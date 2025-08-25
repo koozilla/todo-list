@@ -46,7 +46,7 @@ export default function LoginPage() {
           text: result.error || 'Login failed' 
         })
       }
-    } catch (err) {
+    } catch {
       setMessage({ 
         type: 'error', 
         text: 'An unexpected error occurred. Please try again.' 
@@ -164,7 +164,7 @@ export default function LoginPage() {
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <div className="text-center space-y-4">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link
                   href="/auth/register"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200"
