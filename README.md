@@ -59,12 +59,14 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 ## 🚧 Development Phases
 
 ### Phase 1: Setup & Authentication ✅
-- [ ] Setup Next.js project + Tailwind
-- [ ] Connect to Supabase project
-- [ ] Implement login/signup with Supabase email auth
+- [x] Setup Next.js project + Tailwind
+- [x] Connect to Supabase project
+- [x] Implement login/signup with Supabase email auth
 
-### Phase 2: Basic Task CRUD
-- [ ] Create Supabase tasks table
+### Phase 2: Basic Task CRUD 🔄
+- [x] Create Supabase tasks table schema
+- [x] Set up TypeScript types and interfaces
+- [x] Create Supabase client configuration
 - [ ] Implement Create, Read, Update, Delete APIs
 - [ ] Connect APIs to frontend UI
 
@@ -85,6 +87,34 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - **Collaboration** (shared lists)
 - **Mobile App** (React Native, reusing Supabase backend)
 
+## 🏗️ What's Built So Far
+
+### ✅ Completed Features
+- **Next.js 15.5.0** project with TypeScript and Tailwind CSS
+- **Supabase Integration** with proper client configuration
+- **Magic Link Authentication** - no passwords needed
+- **Protected Routes** with authentication checks
+- **Database Schema** ready for tasks table
+- **TypeScript Types** for tasks, users, and API inputs
+- **Responsive UI** with modern design patterns
+
+### 🔄 In Progress
+- **Task CRUD Operations** - APIs and frontend components
+- **Task Management Interface** - create, edit, delete tasks
+- **Task Organization** - filtering and sorting
+
+### 📱 Current Pages
+- `/` - Landing page (Next.js default)
+- `/test` - Supabase connection test
+- `/auth/login` - Magic link authentication
+- `/dashboard` - Protected user dashboard (placeholder)
+
+### 🗄️ Database Ready
+- Tasks table schema with proper constraints
+- Row Level Security (RLS) policies
+- Automatic timestamp updates
+- Performance indexes
+
 ## 📋 Requirements
 
 ### Functional Requirements
@@ -101,7 +131,60 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 
 ## 🚀 Getting Started
 
-*Coming soon - setup instructions will be added as development progresses*
+### Prerequisites
+- Node.js 18+ (we're using v22.18.0 LTS)
+- npm or yarn package manager
+- Supabase account and project
+
+### Local Development Setup
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd todo-list
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file in the root directory:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. **Set up database**
+   - Go to your Supabase project dashboard
+   - Navigate to SQL Editor
+   - Run the contents of `database-setup.sql`
+
+5. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Test the application**
+   - Visit `http://localhost:3000/test` to verify Supabase connection
+   - Visit `http://localhost:3000/auth/login` to test authentication
+   - Use magic link authentication to sign in
+
+### Project Structure
+```
+src/
+├── app/
+│   ├── auth/
+│   │   ├── login/page.tsx          # Login page with magic link
+│   │   └── callback/route.ts       # Auth callback handler
+│   ├── dashboard/page.tsx          # Main dashboard (protected)
+│   ├── test/page.tsx               # Supabase connection test
+│   └── layout.tsx                  # Root layout
+├── lib/
+│   └── supabase.ts                 # Supabase client configuration
+└── types/
+    └── index.ts                     # TypeScript type definitions
+```
 
 ## 📄 License
 
