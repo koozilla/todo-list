@@ -19,6 +19,7 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<SortOption>('created_at')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [showUserMenu, setShowUserMenu] = useState(false)
 
   useEffect(() => {
     async function getUser() {
@@ -35,6 +36,19 @@ export default function DashboardPage() {
     }
 
     getUser()
+  }, [])
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element
+      if (!target.closest('.user-menu')) {
+        setShowUserMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   const handleSignOut = async () => {
@@ -69,6 +83,10 @@ export default function DashboardPage() {
   const handleSortChange = (newSortBy: SortOption, newDirection: SortDirection) => {
     setSortBy(newSortBy)
     setSortDirection(newDirection)
+  }
+
+  const toggleUserMenu = () => {
+    setShowUserMenu(!showUserMenu)
   }
 
   if (loading) {
@@ -141,8 +159,11 @@ export default function DashboardPage() {
               <ThemeToggle />
 
               {/* User Menu */}
-              <div className="relative">
-                <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+              <div className="relative user-menu">
+                <button 
+                  onClick={toggleUserMenu}
+                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                >
                   <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
                       {user.email?.charAt(0).toUpperCase()}
@@ -151,24 +172,26 @@ export default function DashboardPage() {
                   <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {user.email?.split('@')[0]}
                   </span>
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
                 {/* Dropdown Menu */}
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
+                    </div>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                    >
+                      Sign out
+                    </button>
                   </div>
-                  <button
-                    onClick={handleSignOut}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                  >
-                    Sign out
-                  </button>
-                </div>
+                )}
               </div>
             </div>
           </div>

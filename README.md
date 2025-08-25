@@ -1,12 +1,12 @@
-# Todo List App
+# SimplyTodo
 
-A lightweight, secure Todo List application built with Next.js, Tailwind CSS, and Supabase. Users can authenticate via magic link email authentication and manage their personal tasks with full CRUD operations.
+A lightweight, secure Todo List application built with Next.js, Tailwind CSS, and Supabase. Users can authenticate via email/password authentication and manage their personal tasks with full CRUD operations.
 
 ## 🚀 Features
 
 ### Authentication
 - **Secure Login/Signup** with Supabase Auth
-- **Magic Link Authentication** - no passwords needed
+- **Email/Password Authentication** - reliable and fast
 - **JWT-based Sessions** for persistent login
 - **Row-Level Security** ensuring users only access their own data
 
@@ -28,7 +28,7 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 
 - **Frontend**: Next.js + Tailwind CSS
 - **Backend & Database**: Supabase (PostgreSQL + Auth + API)
-- **Authentication**: Supabase Auth with magic links
+- **Authentication**: Supabase Auth with email/password
 - **Hosting**: Vercel (frontend), Supabase Cloud (backend)
 - **Styling**: Tailwind CSS for responsive design
 
@@ -128,9 +128,10 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - **Final Testing** - ensure all features work in production environment
 
 ### 📱 Current Pages
-- `/` - Landing page (Next.js default)
+- `/` - Landing page with SimplyTodo branding
 - `/test` - Supabase connection test
-- `/auth/login` - Magic link authentication
+- `/auth/login` - Email/password authentication
+- `/auth/register` - User registration
 - `/dashboard` - Complete task management dashboard
 
 ### 🗄️ Database Ready

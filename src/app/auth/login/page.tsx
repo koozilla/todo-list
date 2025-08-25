@@ -66,7 +66,7 @@ export default function LoginPage() {
             Welcome Back
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Sign in to your TaskFlow workspace
+            Sign in to your SimplyTodo workspace
           </p>
         </div>
 

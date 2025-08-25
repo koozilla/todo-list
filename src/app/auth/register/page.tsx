@@ -61,7 +61,7 @@ export default function RegisterPage() {
             Create Account
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Join TaskFlow and start organizing your life
+            Join SimplyTodo and start organizing your life
           </p>
         </div>
 

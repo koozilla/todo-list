@@ -41,7 +41,7 @@ export default function Logo({ className = '', size = 'md' }: LogoProps) {
       <span className={`font-bold text-gray-900 dark:text-white ${
         size === 'sm' ? 'text-lg' : size === 'md' ? 'text-xl' : 'text-2xl'
       }`}>
-        TaskFlow
+        SimplyTodo
       </span>
     </div>
   )
