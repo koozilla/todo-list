@@ -6,16 +6,27 @@ export async function GET(request: NextRequest) {
   try {
     const requestUrl = new URL(request.url)
     const code = requestUrl.searchParams.get("code")
+    const error = requestUrl.searchParams.get("error")
+    const state = requestUrl.searchParams.get("state")
 
     console.log('OAuth callback received:', {
       url: request.url,
       code: code ? 'present' : 'missing',
+      error: error || 'none',
+      state: state ? 'present' : 'missing',
       origin: requestUrl.origin,
+      searchParams: Object.fromEntries(requestUrl.searchParams.entries()),
       env: {
         supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'set' : 'missing',
         supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing'
       }
     })
+
+    // Check for OAuth errors
+    if (error) {
+      console.error('OAuth error received:', error)
+      return NextResponse.redirect(requestUrl.origin + `/auth/login?error=oauth_${error}`)
+    }
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       console.error('Missing Supabase environment variables')
@@ -47,16 +58,18 @@ export async function GET(request: NextRequest) {
       )
 
       console.log('Attempting to exchange code for session...')
-      const { error } = await supabase.auth.exchangeCodeForSession(code)
+      const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
       
-      if (error) {
-        console.error('OAuth callback error:', error)
-        return NextResponse.redirect(requestUrl.origin + "/auth/login?error=oauth_failed")
+      if (exchangeError) {
+        console.error('OAuth callback error:', exchangeError)
+        return NextResponse.redirect(requestUrl.origin + `/auth/login?error=exchange_failed&details=${encodeURIComponent(exchangeError.message)}`)
       }
       
-      console.log('OAuth callback: Session established successfully')
+      console.log('OAuth callback: Session established successfully', { user: data.user?.id })
     } else {
-      console.log('No code received in OAuth callback')
+      console.error('No code received in OAuth callback. Full URL:', request.url)
+      console.error('Search params:', Object.fromEntries(requestUrl.searchParams.entries()))
+      return NextResponse.redirect(requestUrl.origin + "/auth/login?error=no_code")
     }
 
     console.log('Redirecting to dashboard...')
