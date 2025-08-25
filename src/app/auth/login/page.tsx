@@ -55,9 +55,8 @@ export default function LoginPage() {
       {/* Main Content */}
       <div className="flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-md">
-          {/* Logo and Header */}
+          {/* Header */}
           <div className="text-center mb-8">
-            <Logo size="lg" className="mx-auto mb-6" />
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Welcome Back
             </h1>

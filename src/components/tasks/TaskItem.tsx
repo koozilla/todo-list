@@ -83,24 +83,26 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
 
   // Check if task is overdue
   const isOverdue = task.due_date && !task.is_completed && (() => {
+    // Get today's date in local timezone (YYYY-MM-DD format)
     const today = new Date()
-    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    const dueDate = new Date(task.due_date)
-    const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
+    const todayString = today.toLocaleDateString('en-CA') // Returns YYYY-MM-DD format
+    
+    // Compare date strings directly to avoid timezone issues
+    const isOverdue = task.due_date < todayString
     
     // Debug logging
     if (task.due_date) {
       console.log('Task overdue check:', {
         taskTitle: task.title,
         dueDate: task.due_date,
-        dueDateOnly: dueDateOnly.toISOString().split('T')[0],
-        todayDate: todayDate.toISOString().split('T')[0],
-        isOverdue: dueDateOnly < todayDate,
-        isCompleted: task.is_completed
+        todayString: todayString,
+        isOverdue: isOverdue,
+        isCompleted: task.is_completed,
+        comparison: `${task.due_date} < ${todayString} = ${isOverdue}`
       })
     }
     
-    return dueDateOnly < todayDate
+    return isOverdue
   })()
 
   if (isEditing) {
@@ -222,7 +224,7 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
                         : 'text-gray-500 dark:text-gray-400'
                     }`}>
                       {isOverdue ? '⚠️ Overdue: ' : 'Due: '}
-                      {new Date(task.due_date).toLocaleDateString()}
+                      {task.due_date}
                     </span>
                   </div>
                 )}
