@@ -7,32 +7,21 @@ import Link from 'next/link'
 
 export default function RegisterPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true)
-    setMessage(null)
 
     try {
       const result = await AuthService.signInWithGoogle()
       
       if (result.success) {
-        setMessage({ 
-          type: 'success', 
-          text: 'Redirecting to Google... 🔐' 
-        })
         // The redirect will happen automatically via Supabase
+        // No need to show message since redirect is immediate
       } else {
-        setMessage({ 
-          type: 'error', 
-          text: result.error || 'Google sign-in failed' 
-        })
+        console.error('Google sign-in failed:', result.error)
       }
-    } catch {
-      setMessage({ 
-        type: 'error', 
-        text: 'An unexpected error occurred. Please try again.' 
-      })
+    } catch (error) {
+      console.error('An unexpected error occurred:', error)
     } finally {
       setGoogleLoading(false)
     }
