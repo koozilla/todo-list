@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { AuthService } from '@/lib/auth'
 import { User, TaskFilter } from '@/types'
 import Link from 'next/link'
 import CreateTaskForm from '@/components/tasks/CreateTaskForm'
@@ -23,13 +23,9 @@ export default function DashboardPage() {
   useEffect(() => {
     async function getUser() {
       try {
-        const { data: { user: currentUser } } = await supabase.auth.getUser()
+        const currentUser = await AuthService.getCurrentUser()
         if (currentUser) {
-          setUser({
-            id: currentUser.id,
-            email: currentUser.email!,
-            created_at: currentUser.created_at
-          })
+          setUser(currentUser)
         }
       } catch (error) {
         console.error('Error getting user:', error)
@@ -42,8 +38,16 @@ export default function DashboardPage() {
   }, [])
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/'
+    try {
+      const result = await AuthService.signOut()
+      if (result.success) {
+        window.location.href = '/'
+      } else {
+        console.error('Sign out error:', result.error)
+      }
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
 
   const handleTaskCreated = () => {
@@ -83,14 +87,22 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-6">
           <Logo size="lg" className="mx-auto mb-8" />
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Welcome to TaskFlow</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">Please sign in to access your personal task management workspace.</p>
-          <Link
-            href="/auth/login"
-            className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-semibold rounded-full shadow-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 transition-all duration-200 transform hover:scale-105"
-          >
-            Get Started
-          </Link>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Not Authenticated</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">Please sign in to access your dashboard.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <Link
+              href="/auth/login"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 transition-all duration-200"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/auth/register"
+              className="inline-flex items-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-base font-medium rounded-full shadow-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition-all duration-200"
+            >
+              Create Account
+            </Link>
+          </div>
         </div>
       </div>
     )

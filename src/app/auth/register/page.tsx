@@ -4,16 +4,15 @@ import { useState } from 'react'
 import { AuthService } from '@/lib/auth'
 import Logo from '@/components/ui/Logo'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   })
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -28,22 +27,18 @@ export default function LoginPage() {
     setMessage(null)
 
     try {
-      const result = await AuthService.login(formData)
+      const result = await AuthService.register(formData)
       
-      if (result.success && result.user) {
+      if (result.success) {
         setMessage({ 
           type: 'success', 
-          text: 'Login successful! Redirecting to dashboard... 🚀' 
+          text: 'Registration successful! Please check your email to verify your account. 📧' 
         })
-        
-        // Redirect to dashboard after successful login
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 1500)
+        setFormData({ email: '', password: '', confirmPassword: '' })
       } else {
         setMessage({ 
           type: 'error', 
-          text: result.error || 'Login failed' 
+          text: result.error || 'Registration failed' 
         })
       }
     } catch (err) {
@@ -63,14 +58,14 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Logo size="lg" className="mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome Back
+            Create Account
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Sign in to your TaskFlow workspace
+            Join TaskFlow and start organizing your life
           </p>
         </div>
 
-        {/* Login Form */}
+        {/* Registration Form */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -99,9 +94,27 @@ export default function LoginPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter your password"
+                placeholder="Create a password (min. 6 characters)"
                 className="w-full px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200 placeholder-gray-500 dark:placeholder-gray-400"
                 required
+                minLength={6}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                className="w-full px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:focus:ring-blue-400 transition-all duration-200 placeholder-gray-500 dark:placeholder-gray-400"
+                required
+                minLength={6}
               />
             </div>
 
@@ -147,14 +160,14 @@ export default function LoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Signing In...
+                  Creating Account...
                 </>
               ) : (
                 <>
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                   </svg>
-                  Sign In
+                  Create Account
                 </>
               )}
             </button>
@@ -162,14 +175,14 @@ export default function LoginPage() {
 
           {/* Info Section */}
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="text-center space-y-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
+            <div className="text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Already have an account?{' '}
                 <Link
-                  href="/auth/register"
+                  href="/auth/login"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200"
                 >
-                  Create one here
+                  Sign in here
                 </Link>
               </p>
               <Link
@@ -185,7 +198,7 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            By signing in, you agree to our{' '}
+            By creating an account, you agree to our{' '}
             <Link href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
               Terms of Service
             </Link>{' '}
