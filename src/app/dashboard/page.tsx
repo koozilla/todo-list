@@ -14,7 +14,7 @@ import Logo from '@/components/ui/Logo'
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeFilter, setActiveFilter] = useState<TaskFilter>('all')
+  const [activeFilter, setActiveFilter] = useState<TaskFilter>('pending')
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<SortOption>('created_at')
@@ -239,7 +239,7 @@ export default function DashboardPage() {
             {/* Filter Tabs - Hidden when in search mode */}
             {!showSearch && (
               <div className="flex space-x-1">
-                {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
+                {(['pending', 'completed', 'all'] as TaskFilter[]).map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
@@ -249,9 +249,9 @@ export default function DashboardPage() {
                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
+                    {filter === 'pending' && 'Active'}
+                    {filter === 'completed' && 'Completed'}
                     {filter === 'all' && 'All Tasks'}
-                    {filter === 'pending' && 'Active Tasks'}
-                    {filter === 'completed' && 'Completed Tasks'}
                   </button>
                 ))}
               </div>
