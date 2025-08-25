@@ -101,15 +101,15 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
   })()
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border ${
+    <div className={`rounded-lg shadow-sm border p-4 transition-all duration-200 ${
       task.is_completed 
-        ? 'border-green-200 bg-green-50' 
+        ? 'border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700' 
         : isOverdue 
-          ? 'border-red-200 bg-red-50' 
-          : 'border-gray-200'
-    } p-4 transition-all duration-200`}>
+          ? 'border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700' 
+          : 'border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700'
+    }`}>
       {error && (
-        <div className="text-red-600 text-sm bg-red-100 border border-red-200 rounded-md p-2 mb-3">
+        <div className="text-red-600 dark:text-red-400 text-sm bg-red-100 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-2 mb-3">
           {error}
         </div>
       )}
@@ -138,21 +138,21 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
                 type="text"
                 value={editData.title}
                 onChange={(e) => setEditData(prev => ({ ...prev, title: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                 placeholder="Task title"
               />
               <textarea
                 value={editData.description}
                 onChange={(e) => setEditData(prev => ({ ...prev, description: e.target.value }))}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                 placeholder="Description (optional)"
               />
               <input
                 type="date"
                 value={editData.due_date}
                 onChange={(e) => setEditData(prev => ({ ...prev, due_date: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white bg-white dark:bg-gray-700"
               />
               <div className="flex space-x-2">
                 <button
@@ -173,14 +173,14 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
           ) : (
             <>
               <h3 className={`text-sm font-medium ${
-                task.is_completed ? 'text-green-800 line-through' : 'text-gray-900'
+                task.is_completed ? 'text-green-800 dark:text-green-300 line-through' : 'text-gray-900 dark:text-white'
               }`}>
                 {task.title}
               </h3>
               
               {task.description && (
                 <p className={`text-sm mt-1 ${
-                  task.is_completed ? 'text-green-700' : 'text-gray-600'
+                  task.is_completed ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'
                 }`}>
                   {task.description}
                 </p>
@@ -188,7 +188,7 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
               
               {task.due_date && (
                 <p className={`text-xs mt-2 ${
-                  isOverdue ? 'text-red-600 font-medium' : 'text-gray-500'
+                  isOverdue ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-gray-400'
                 }`}>
                   Due: {formatDate(task.due_date)}
                   {isOverdue && ' (Overdue)'}

@@ -51,7 +51,7 @@ export default function TaskSort({ sortBy, sortDirection, onSortChange }: TaskSo
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm font-medium text-gray-700">Sort by:</span>
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
       <div className="flex space-x-1">
         {sortOptions.map((option) => (
           <button
@@ -59,8 +59,8 @@ export default function TaskSort({ sortBy, sortDirection, onSortChange }: TaskSo
             onClick={() => handleSortChange(option.value as SortOption)}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               sortBy === option.value
-                ? 'bg-indigo-100 text-indigo-700 border border-indigo-200'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
+                ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-700'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
             }`}
           >
             <div className="flex items-center space-x-1">

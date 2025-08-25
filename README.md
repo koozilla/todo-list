@@ -70,15 +70,18 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - [x] Implement Create, Read, Update, Delete APIs
 - [x] Connect APIs to frontend UI
 
-### Phase 3: Task Views & UX
-- [ ] Add Completed/Pending views
-- [ ] Add sorting by created_at
-- [ ] Improve UI (responsive design)
+### Phase 3: Task Views & UX ✅
+- [x] Add Completed/Pending views
+- [x] Add sorting by created_at
+- [x] Improve UI (responsive design)
+- [x] Add search functionality
+- [x] Add advanced sorting options
 
-### Phase 4: Polish & Deployment
-- [ ] Add dark mode toggle (optional)
+### Phase 4: Polish & Deployment 🔄
+- [x] Add dark mode toggle with theme context
+- [x] Improve UI styling and dark mode support
 - [ ] Deploy on Vercel (frontend) + Supabase (backend)
-- [ ] Write minimal documentation for usage
+- [x] Write comprehensive documentation for usage
 
 ## 🔮 Future Enhancements
 
@@ -113,9 +116,13 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 - **Inline Editing** - edit tasks without page refresh
 - **Error Handling** - user-friendly error messages
 - **Loading States** - smooth user experience
+- **Advanced Search** - debounced search by title/description
+- **Smart Sorting** - multiple sort options with visual indicators
+- **Dark Mode Support** - complete theme switching system
+- **Enhanced Styling** - beautiful UI in both light and dark themes
 
 ### 🔄 In Progress
-- **Phase 3 Enhancements** - search, sorting, and UX improvements
+- **Phase 4 Deployment** - deploy to Vercel and production setup
 
 ### 📱 Current Pages
 - `/` - Landing page (Next.js default)
