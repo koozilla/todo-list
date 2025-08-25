@@ -84,7 +84,7 @@ export default function TaskList({ filter, searchQuery, sortBy, sortDirection, o
         case 'completed':
           return 'No completed tasks yet. Keep working on your goals!'
         case 'pending':
-          return 'No pending tasks. Great job staying on top of things!'
+          return 'No active tasks. Great job staying on top of things!'
         default:
           return 'No tasks yet. Create your first task to get started!'
       }

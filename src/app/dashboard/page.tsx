@@ -250,8 +250,8 @@ export default function DashboardPage() {
                     }`}
                   >
                     {filter === 'all' && 'All Tasks'}
-                    {filter === 'pending' && 'Pending'}
-                    {filter === 'completed' && 'Completed'}
+                    {filter === 'pending' && 'Active Tasks'}
+                    {filter === 'completed' && 'Completed Tasks'}
                   </button>
                 ))}
               </div>
