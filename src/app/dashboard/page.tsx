@@ -217,9 +217,9 @@ export default function DashboardPage() {
 
         {/* Controls Bar */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4 mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center">
             {/* Filter Tabs */}
-            <div className="flex space-x-1 flex-1">
+            <div className="flex space-x-1 mb-4 sm:mb-0 sm:mr-6">
               {(['all', 'pending', 'completed'] as TaskFilter[]).map((filter) => (
                 <button
                   key={filter}
