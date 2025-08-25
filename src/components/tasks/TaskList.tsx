@@ -4,28 +4,32 @@ import { useState, useEffect } from 'react'
 import { Task, TaskFilter } from '@/types'
 import { TaskService } from '@/lib/tasks'
 import TaskItem from './TaskItem'
+import { SortOption, SortDirection } from './TaskSort'
 
 interface TaskListProps {
   filter: TaskFilter
+  searchQuery: string
+  sortBy: SortOption
+  sortDirection: SortDirection
   onTasksChange: () => void
 }
 
-export default function TaskList({ filter, onTasksChange }: TaskListProps) {
+export default function TaskList({ filter, searchQuery, sortBy, sortDirection, onTasksChange }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
     loadTasks()
-  }, [filter])
+  }, [filter, searchQuery, sortBy, sortDirection])
 
   const loadTasks = async () => {
     setLoading(true)
     setError('')
     
     try {
-      console.log('Loading tasks with filter:', filter)
-      const fetchedTasks = await TaskService.getTasks(filter)
+      console.log('Loading tasks with options:', { filter, searchQuery, sortBy, sortDirection })
+      const fetchedTasks = await TaskService.getTasksAdvanced(filter, searchQuery, sortBy, sortDirection)
       console.log('Fetched tasks:', fetchedTasks)
       setTasks(fetchedTasks)
     } catch (err) {

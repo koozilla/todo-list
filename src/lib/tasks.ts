@@ -37,7 +37,6 @@ export class TaskService {
         .from('tasks')
         .select('*')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
 
       // Apply filters
       if (filter === 'pending') {
@@ -45,6 +44,9 @@ export class TaskService {
       } else if (filter === 'completed') {
         query = query.eq('is_completed', true)
       }
+
+      // Default sorting by created_at desc
+      query = query.order('created_at', { ascending: false })
 
       const { data, error } = await query
 
@@ -54,6 +56,51 @@ export class TaskService {
       return data || []
     } catch (error) {
       console.error('Error fetching tasks:', error)
+      return []
+    }
+  }
+
+  // Get tasks with search, filter, and sort
+  static async getTasksAdvanced(
+    filter: TaskFilter = 'all',
+    searchQuery: string = '',
+    sortBy: string = 'created_at',
+    sortDirection: 'asc' | 'desc' = 'desc'
+  ): Promise<Task[]> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('User not authenticated')
+
+      console.log('Getting tasks with advanced options:', { filter, searchQuery, sortBy, sortDirection })
+
+      let query = supabase
+        .from('tasks')
+        .select('*')
+        .eq('user_id', user.id)
+
+      // Apply filters
+      if (filter === 'pending') {
+        query = query.eq('is_completed', false)
+      } else if (filter === 'completed') {
+        query = query.eq('is_completed', true)
+      }
+
+      // Apply search if query exists
+      if (searchQuery.trim()) {
+        query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+      }
+
+      // Apply sorting
+      query = query.order(sortBy, { ascending: sortDirection === 'asc' })
+
+      const { data, error } = await query
+
+      console.log('Advanced query response:', { data, error })
+
+      if (error) throw error
+      return data || []
+    } catch (error) {
+      console.error('Error fetching tasks with advanced options:', error)
       return []
     }
   }

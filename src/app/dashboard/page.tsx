@@ -6,12 +6,17 @@ import { User, TaskFilter } from '@/types'
 import Link from 'next/link'
 import CreateTaskForm from '@/components/tasks/CreateTaskForm'
 import TaskList from '@/components/tasks/TaskList'
+import TaskSearch from '@/components/tasks/TaskSearch'
+import TaskSort, { SortOption, SortDirection } from '@/components/tasks/TaskSort'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState<TaskFilter>('all')
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<SortOption>('created_at')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 
   useEffect(() => {
     async function getUser() {
@@ -49,6 +54,15 @@ export default function DashboardPage() {
   const handleTasksChange = () => {
     // This will trigger a refresh of the task list
     console.log('Tasks changed, should refresh')
+  }
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
+
+  const handleSortChange = (newSortBy: SortOption, newDirection: SortDirection) => {
+    setSortBy(newSortBy)
+    setSortDirection(newDirection)
   }
 
   if (loading) {
@@ -127,6 +141,22 @@ export default function DashboardPage() {
             </div>
           )}
 
+          {/* Search and Sort Controls */}
+          <div className="mb-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex-1 max-w-md">
+                <TaskSearch onSearch={handleSearch} placeholder="Search tasks by title or description..." />
+              </div>
+              <div className="flex-shrink-0">
+                <TaskSort
+                  sortBy={sortBy}
+                  sortDirection={sortDirection}
+                  onSortChange={handleSortChange}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Filter Tabs */}
           <div className="mb-6">
             <div className="border-b border-gray-200">
@@ -149,7 +179,13 @@ export default function DashboardPage() {
           </div>
 
           {/* Task List */}
-          <TaskList filter={activeFilter} onTasksChange={handleTasksChange} />
+          <TaskList 
+            filter={activeFilter} 
+            searchQuery={searchQuery}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onTasksChange={handleTasksChange} 
+          />
         </div>
       </main>
     </div>
