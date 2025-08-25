@@ -8,6 +8,7 @@ import CreateTaskForm from '@/components/tasks/CreateTaskForm'
 import TaskList from '@/components/tasks/TaskList'
 import TaskSearch from '@/components/tasks/TaskSearch'
 import TaskSort, { SortOption, SortDirection } from '@/components/tasks/TaskSort'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -94,18 +95,19 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <nav className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-xl font-semibold text-gray-900">Todo List App</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">{user.email}</span>
+              <ThemeToggle />
+              <span className="text-sm text-gray-700 dark:text-gray-300">{user.email}</span>
               <button
                 onClick={handleSignOut}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
               >
                 Sign Out
               </button>
@@ -120,8 +122,8 @@ export default function DashboardPage() {
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">My Tasks</h2>
-                <p className="mt-1 text-sm text-gray-600">Manage and organize your daily tasks</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My Tasks</h2>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">Manage and organize your daily tasks</p>
               </div>
               <div className="mt-4 sm:mt-0">
                 <button
