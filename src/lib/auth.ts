@@ -19,6 +19,40 @@ export interface RegisterCredentials {
 }
 
 export class AuthService {
+  // Google OAuth login
+  static async signInWithGoogle(): Promise<AuthResponse> {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        }
+      })
+
+      if (error) {
+        return {
+          success: false,
+          error: error.message
+        }
+      }
+
+      // For OAuth, we don't get the user immediately
+      // The user will be redirected to the callback URL
+      return {
+        success: true
+      }
+    } catch (err) {
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : 'An unexpected error occurred'
+      }
+    }
+  }
+
   // Register new user with email and password
   static async register(credentials: RegisterCredentials): Promise<AuthResponse> {
     try {
