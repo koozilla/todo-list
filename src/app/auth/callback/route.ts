@@ -6,6 +6,12 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get("code")
 
+  console.log('OAuth callback received:', {
+    url: request.url,
+    code: code ? 'present' : 'missing',
+    origin: requestUrl.origin
+  })
+
   if (code) {
     const cookieStore = await cookies()
     
@@ -32,6 +38,7 @@ export async function GET(request: NextRequest) {
       }
     )
 
+    console.log('Attempting to exchange code for session...')
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (error) {
@@ -41,8 +48,11 @@ export async function GET(request: NextRequest) {
     }
     
     console.log('OAuth callback: Session established successfully')
+  } else {
+    console.log('No code received in OAuth callback')
   }
 
   // URL to redirect to after sign in process completes
+  console.log('Redirecting to dashboard...')
   return NextResponse.redirect(requestUrl.origin + "/dashboard")
 }
