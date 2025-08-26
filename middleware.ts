@@ -66,9 +66,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
-     * - auth/callback (OAuth callback route)
-     * - auth/login and auth/register (allow access to auth pages)
+     * - auth/ (all auth routes including login, register, callback)
      */
-    '/((?!_next/static|_next/image|favicon.ico|public|auth/callback|auth/login|auth/register).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public|auth/).*)',
   ],
 }
