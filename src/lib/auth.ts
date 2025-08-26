@@ -1,4 +1,3 @@
-import { supabase } from './supabase'
 import { createBrowserClient } from '@supabase/ssr'
 import { User } from '@/types'
 
