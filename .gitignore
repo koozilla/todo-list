@@ -9,19 +9,12 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+ 
 
 # testing
 /coverage
-/__tests__
-**/__tests__/
-**/*.test.js
-**/*.test.ts
-**/*.test.jsx
-**/*.test.tsx
-**/*.spec.js
-**/*.spec.ts
-**/*.spec.jsx
-**/*.spec.tsx
+*.lcov
+.nyc_output
 
 # next.js
 /.next/
@@ -76,13 +69,6 @@ pids
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -132,18 +118,9 @@ public
 tmp/
 temp/
 
-# Generated test files and scripts
-scripts/
-**/scripts/
-*.test.js
-*.test.ts
-*.spec.js
-*.spec.ts
-
 # Build and dist directories
 dist/
 build/
-lib/
 
 # Cache directories
 .cache/
@@ -155,3 +132,7 @@ lib/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Exclude only temporary generated files, keep test scripts
+# Keep: scripts/, **/*.test.js, **/*.test.ts, **/*.spec.js, **/*.spec.ts
+# Exclude: build artifacts, cache, temporary files
