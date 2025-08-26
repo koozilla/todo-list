@@ -55,7 +55,7 @@ A modern, secure Todo List application built with Next.js, Tailwind CSS, and Sup
 
 ## 🌐 Live Demo
 
-**Production URL**: https://todo-list-9kxrrez6b-koozillas-projects.vercel.app
+**Production URL**: https://simply-todo-prod.vercel.app/
 
 ### Test Credentials
 - **Email/Password**: test@example.com / 123.123
@@ -280,7 +280,7 @@ Configuration Files:
 
 The application is currently deployed on Vercel and fully functional:
 
-- **Production URL**: https://todo-list-9kxrrez6b-koozillas-projects.vercel.app
+- **Production URL**: https://simply-todo-prod.vercel.app/
 - **Authentication**: Both email/password and Google OAuth working
 - **Database**: Supabase PostgreSQL with Row Level Security
 - **Performance**: Optimized for production with proper caching
