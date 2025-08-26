@@ -32,7 +32,7 @@ async function testProductionAuth() {
   // Parse command line arguments
   const args = process.argv.slice(2);
   const testEmail = args[0] || 'test@example.com';
-  const testPassword = args[1] || '123.123';
+  const testPassword = args[1] || 'test-password';
   
   console.log('📧 Email:', testEmail);
   console.log('🔑 Password:', testPassword);

@@ -67,14 +67,14 @@ node scripts/create-test-user.js your-email@example.com your-password
 
 **What it does:**
 - ✅ Creates test user with specified email and password
-- ✅ Defaults to email: `test@example.com` and password: `123.123`
+- ✅ Defaults to email: `test@example.com` and password: `test-password`
 - ✅ Handles existing user scenarios
 - ✅ Tests sign-in functionality
 - ✅ Shows user ID and email confirmation status
 
 **Parameters:**
 - **Email** (optional): User email address (default: test@example.com)
-- **Password** (optional): User password (default: 123.123)
+- **Password** (optional): User password (default: test-password)
 
 **When to use:**
 - Setting up development environment
@@ -103,7 +103,7 @@ node scripts/test-prod-auth.js your-email@example.com your-password
 
 **Parameters:**
 - **Email** (optional): User email address (default: test@example.com)
-- **Password** (optional): User password (default: 123.123)
+- **Password** (optional): User password (default: test-password)
 
 **Production URL**: https://simply-todo-prod.vercel.app/
 
