@@ -32,6 +32,7 @@ export class AuthService {
       const redirectURL = getRedirectURL()
       console.log('OAuth redirect URL:', redirectURL)
 
+      // Force the redirect URL by using the full URL
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
