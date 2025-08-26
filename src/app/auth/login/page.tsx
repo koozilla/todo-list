@@ -6,10 +6,55 @@ import Logo from '@/components/ui/Logo'
 import Link from 'next/link'
 
 export default function LoginPage() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  })
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [emailLoading, setEmailLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+    // Clear error when user starts typing
+    if (error) setError('')
+  }
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setEmailLoading(true)
+
+    try {
+      // Basic validation
+      if (!formData.email || !formData.password) {
+        setError('All fields are required')
+        return
+      }
+
+      const result = await AuthService.login(formData)
+      
+      if (result.success) {
+        // Redirect to dashboard on successful login
+        window.location.href = '/dashboard'
+      } else {
+        setError(result.error || 'Login failed')
+      }
+    } catch (error) {
+      setError('An unexpected error occurred')
+      console.error('Login error:', error)
+    } finally {
+      setEmailLoading(false)
+    }
+  }
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true)
+    setError('')
 
     try {
       // Check if AuthService is available
@@ -23,15 +68,11 @@ export default function LoginPage() {
         // The redirect will happen automatically via Supabase
         // No need to show message since redirect is immediate
       } else {
-        console.error('Google sign-in failed:', result.error)
+        setError(result.error || 'Google sign-in failed')
       }
     } catch (error) {
-      console.error('An unexpected error occurred:', error)
-      console.error('Error details:', {
-        name: error instanceof Error ? error.name : 'Unknown',
-        message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : 'No stack trace'
-      })
+      setError('An unexpected error occurred')
+      console.error('Google sign-in error:', error)
     } finally {
       setGoogleLoading(false)
     }
@@ -71,12 +112,84 @@ export default function LoginPage() {
               Welcome Back
             </h1>
             <p className="text-gray-600 dark:text-gray-300">
-              Sign in to your SimplyTodo workspace with Google
+              Sign in to your SimplyTodo workspace
             </p>
           </div>
 
           {/* Login Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
+            {/* Error Messages */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+              </div>
+            )}
+
+            {/* Email Login Form */}
+            <form onSubmit={handleEmailLogin} className="mb-6">
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
+                    placeholder="Enter your email"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
+                    placeholder="Enter your password"
+                  />
+                </div>
+              </div>
+              
+              <button
+                type="submit"
+                disabled={emailLoading}
+                className="w-full mt-6 px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {emailLoading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Signing In...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or continue with</span>
+              </div>
+            </div>
+
             {/* Google Sign-In Button */}
             <button
               type="button"
@@ -108,6 +221,15 @@ export default function LoginPage() {
             {/* Info Section */}
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div className="text-center">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Don't have an account?{' '}
+                  <Link 
+                    href="/auth/register" 
+                    className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                  >
+                    Sign up here
+                  </Link>
+                </p>
                 <Link
                   href="/"
                   className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
