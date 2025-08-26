@@ -29,6 +29,14 @@ function parseEnvFile(filePath) {
 async function testProductionAuth() {
   console.log('🔧 Testing production authentication...');
   
+  // Parse command line arguments
+  const args = process.argv.slice(2);
+  const testEmail = args[0] || 'test@example.com';
+  const testPassword = args[1] || '123.123';
+  
+  console.log('📧 Email:', testEmail);
+  console.log('🔑 Password:', testPassword);
+  
   // Read environment variables
   const envPath = path.join(__dirname, '..', '.env.local');
   const env = parseEnvFile(envPath);
@@ -49,10 +57,6 @@ async function testProductionAuth() {
     // Import Supabase client
     const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    // Test credentials
-    const testEmail = 'test@example.com';
-    const testPassword = '123.123';
     
     console.log('\n🔐 Testing login with production credentials...');
     console.log('📧 Email:', testEmail);

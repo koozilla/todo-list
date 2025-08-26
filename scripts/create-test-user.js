@@ -29,6 +29,14 @@ function parseEnvFile(filePath) {
 async function createTestUser() {
   console.log('🔧 Creating test user...');
   
+  // Parse command line arguments
+  const args = process.argv.slice(2);
+  const testEmail = args[0] || 'test@example.com';
+  const testPassword = args[1] || '123.123';
+  
+  console.log('📧 Email:', testEmail);
+  console.log('🔑 Password:', testPassword);
+  
   // Read environment variables
   const envPath = path.join(__dirname, '..', '.env.local');
   const env = parseEnvFile(envPath);
@@ -52,10 +60,6 @@ async function createTestUser() {
     // Import Supabase client
     const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    // Test credentials
-    const testEmail = 'test@example.com';
-    const testPassword = '123.123';
     
     console.log('\n🔐 Attempting to create test user...');
     console.log('📧 Email:', testEmail);

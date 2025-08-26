@@ -58,19 +58,23 @@ Creates or verifies the test user account for development and testing.
 
 **Usage:**
 ```bash
+# Use default test credentials
 node scripts/create-test-user.js
+
+# Use custom credentials
+node scripts/create-test-user.js your-email@example.com your-password
 ```
 
 **What it does:**
-- ✅ Creates test user with email: `test@example.com`
-- ✅ Uses password: `123.123`
+- ✅ Creates test user with specified email and password
+- ✅ Defaults to email: `test@example.com` and password: `123.123`
 - ✅ Handles existing user scenarios
 - ✅ Tests sign-in functionality
 - ✅ Shows user ID and email confirmation status
 
-**Test Credentials:**
-- **Email**: test@example.com
-- **Password**: 123.123
+**Parameters:**
+- **Email** (optional): User email address (default: test@example.com)
+- **Password** (optional): User password (default: 123.123)
 
 **When to use:**
 - Setting up development environment
@@ -84,14 +88,22 @@ Tests authentication against the production Supabase instance.
 
 **Usage:**
 ```bash
+# Use default test credentials
 node scripts/test-prod-auth.js
+
+# Use custom credentials
+node scripts/test-prod-auth.js your-email@example.com your-password
 ```
 
 **What it tests:**
 - ✅ Production Supabase connection
-- ✅ Test user authentication
+- ✅ Test user authentication with specified credentials
 - ✅ User creation if needed
 - ✅ Login functionality
+
+**Parameters:**
+- **Email** (optional): User email address (default: test@example.com)
+- **Password** (optional): User password (default: 123.123)
 
 **Production URL**: https://simply-todo-prod.vercel.app/
 
