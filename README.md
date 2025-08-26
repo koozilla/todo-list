@@ -207,15 +207,51 @@ A lightweight, secure Todo List application built with Next.js, Tailwind CSS, an
 src/
 ├── app/
 │   ├── auth/
-│   │   ├── login/page.tsx          # Login page with magic link
-│   │   └── callback/route.ts       # Auth callback handler
+│   │   ├── login/page.tsx          # Login page with Google OAuth
+│   │   ├── register/page.tsx       # User registration page
+│   │   └── callback/route.ts       # OAuth callback handler
 │   ├── dashboard/page.tsx          # Main dashboard (protected)
 │   ├── test/page.tsx               # Supabase connection test
-│   └── layout.tsx                  # Root layout
-├── lib/
-│   └── supabase.ts                 # Supabase client configuration
-└── types/
-    └── index.ts                     # TypeScript type definitions
+│   ├── layout.tsx                  # Root layout with providers
+│   └── page.tsx                    # Landing page
+├── components/
+│   ├── tasks/                      # Task management components
+│   │   ├── CreateTaskForm.tsx      # Task creation form
+│   │   ├── TaskItem.tsx            # Individual task display
+│   │   ├── TaskList.tsx            # Task list container
+│   │   ├── TaskSearch.tsx          # Task search functionality
+│   │   └── TaskSort.tsx            # Task sorting options
+│   └── ui/                         # Reusable UI components
+│       ├── Logo.tsx                # Application logo
+│       └── ThemeToggle.tsx         # Dark/light mode toggle
+├── contexts/                       # React context providers
+│   ├── AuthContext.tsx             # Authentication state management
+│   └── ThemeContext.tsx            # Theme state management
+├── lib/                            # Utility libraries
+│   ├── auth.ts                     # Authentication service
+│   ├── supabase.ts                 # Supabase client configuration
+│   └── tasks.ts                    # Task management API
+├── types/                          # TypeScript type definitions
+│   └── index.ts                    # Application types and interfaces
+└── globals.css                     # Global styles and Tailwind CSS
+
+scripts/                             # Development and testing utilities
+├── test-supabase-env.js            # Supabase environment testing
+└── README.md                       # Scripts documentation
+
+public/                              # Static assets
+├── favicon.ico                     # Application favicon
+├── next.svg                        # Next.js logo
+└── vercel.svg                      # Vercel logo
+
+Configuration Files:
+├── .env.local                      # Local environment variables
+├── .env.production                 # Production environment variables
+├── tailwind.config.js              # Tailwind CSS configuration
+├── next.config.ts                  # Next.js configuration
+├── tsconfig.json                   # TypeScript configuration
+├── package.json                     # Dependencies and scripts
+└── database-setup.sql              # Database schema setup
 ```
 
 ## 📄 License
