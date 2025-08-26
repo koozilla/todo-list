@@ -22,8 +22,6 @@ export class AuthService {
   // Google OAuth login
   static async signInWithGoogle(): Promise<AuthResponse> {
     try {
-      console.log('🔍 [AUTH] signInWithGoogle called')
-      
       // Check if we're in browser environment
       if (typeof window === 'undefined') {
         throw new Error('This function must be called in the browser')
@@ -33,22 +31,8 @@ export class AuthService {
       if (typeof supabase === 'undefined') {
         throw new Error('Supabase client is not available')
       }
-      
-      console.log('🔍 [AUTH] Supabase client available:', !!supabase)
-      console.log('🔍 [AUTH] Supabase auth available:', !!supabase.auth)
-      
-      // Use Supabase's default OAuth redirect handling
-      // This will redirect to Supabase's OAuth endpoint, not our custom callback
-      console.log('🔍 [AUTH] Starting Google OAuth flow...')
-      console.log('🔍 [AUTH] Current origin:', window.location.origin)
-      console.log('🔍 [AUTH] Supabase client config:', {
-        url: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
-        hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      })
 
       // Let Supabase handle the OAuth flow completely
-      console.log('🔍 [AUTH] Calling Supabase signInWithOAuth...')
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -59,8 +43,6 @@ export class AuthService {
           },
         }
       })
-      
-      console.log('🔍 [AUTH] Supabase OAuth response:', { error: error?.message || 'No error' })
 
       if (error) {
         return {
