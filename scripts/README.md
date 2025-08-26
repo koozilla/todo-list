@@ -26,7 +26,7 @@ node scripts/test-supabase-env.js
 
 📋 Environment Variables:
 ✅ Supabase URL: https://your-project.supabase.co
-✅ Supabase Key: eyJhbGciOiJIUzI1NiIs...
+✅ Supabase Key: ...
 ✅ Key Length: 208
 
 ✅ Environment variables look good!
