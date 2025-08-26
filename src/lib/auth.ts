@@ -135,25 +135,11 @@ export class AuthService {
   // Login with email and password
   static async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      console.log('🔑 AuthService.login called with:', {
-        email: credentials.email,
-        passwordLength: credentials.password.length,
-        hasPassword: !!credentials.password
-      })
-
       // Use browser client for proper cookie handling
       const browserClient = getBrowserClient()
       const { data, error } = await browserClient.auth.signInWithPassword({
         email: credentials.email,
         password: credentials.password
-      })
-
-      console.log('🔑 Supabase login response:', {
-        hasData: !!data,
-        hasUser: !!data?.user,
-        userEmail: data?.user?.email,
-        hasError: !!error,
-        errorMessage: error?.message
       })
 
       if (error) {

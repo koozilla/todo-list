@@ -18,8 +18,6 @@ export default function LoginPage() {
   const [emailLoading, setEmailLoading] = useState(false)
   const [error, setError] = useState('')
 
-
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -35,17 +33,6 @@ export default function LoginPage() {
     setError('')
     setEmailLoading(true)
 
-    console.log('📝 Form submitted with data:', {
-      email: formData.email,
-      password: formData.password,
-      passwordLength: formData.password.length,
-      hasEmail: !!formData.email,
-      hasPassword: !!formData.password
-    })
-
-    // Add a simple alert to test if form is submitting
-    alert('Form submitted! Check console for details.')
-
     try {
       // Basic validation
       if (!formData.email || !formData.password) {
@@ -53,30 +40,16 @@ export default function LoginPage() {
         return
       }
 
-      console.log('🔐 Login attempt with:', {
-        email: formData.email,
-        passwordLength: formData.password.length,
-        hasPassword: !!formData.password
-      })
-
-      console.log('🔍 Calling AuthService.login...')
       const result = await AuthService.login(formData)
-      console.log('🔍 AuthService.login result:', result)
       
       if (result.success) {
         console.log('Login successful, refreshing user data...')
         // Refresh user data in AuthContext after successful login
         await refreshUser()
-        console.log('User data refreshed, checking cookies...')
-        
-        // Check what cookies are set
-        console.log('🍪 All cookies:', document.cookie)
+        console.log('User data refreshed, redirecting to dashboard...')
         
         // Add a small delay to ensure session cookie is set
-        console.log('⏳ Waiting 500ms for session cookie to be set...')
         await new Promise(resolve => setTimeout(resolve, 500))
-        
-        console.log('🚀 Redirecting to dashboard...')
         // Navigate directly to dashboard
         router.push('/dashboard')
       } else {
@@ -165,33 +138,7 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Debug: Clear Session Cookie Button */}
-            <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <p className="text-yellow-700 dark:text-yellow-400 text-sm mb-2">
-                Debug: Clear corrupted session cookie
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                  window.location.reload();
-                }}
-                className="px-3 py-1 text-xs bg-yellow-600 text-white rounded hover:bg-yellow-700"
-              >
-                Clear Session Cookie
-              </button>
-            </div>
 
-            {/* Debug: Test Credentials */}
-            <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-              <p className="text-blue-700 dark:text-blue-400 text-sm mb-2">
-                Test Credentials:
-              </p>
-              <p className="text-blue-600 dark:text-blue-300 text-xs">
-                Email: test@example.com<br/>
-                Password: 123.123
-              </p>
-            </div>
 
             {/* Email Login Form */}
             <form onSubmit={handleEmailLogin} className="mb-6">
