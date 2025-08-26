@@ -30,9 +30,24 @@ export class AuthService {
       }
 
       const redirectURL = getRedirectURL()
-      console.log('OAuth redirect URL:', redirectURL)
+      console.log('🔍 [AUTH] Starting Google OAuth flow...')
+      console.log('🔍 [AUTH] Current origin:', window.location.origin)
+      console.log('🔍 [AUTH] OAuth redirect URL:', redirectURL)
+      console.log('🔍 [AUTH] Supabase client config:', {
+        url: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
+        hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      })
 
       // Force the redirect URL by using the full URL
+      console.log('🔍 [AUTH] Calling Supabase signInWithOAuth with options:', {
+        provider: 'google',
+        redirectTo: redirectURL,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      })
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -43,6 +58,8 @@ export class AuthService {
           },
         }
       })
+      
+      console.log('🔍 [AUTH] Supabase OAuth response:', { error: error?.message || 'No error' })
 
       if (error) {
         return {

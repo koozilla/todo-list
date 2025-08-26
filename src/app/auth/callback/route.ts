@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const error = requestUrl.searchParams.get("error")
     const state = requestUrl.searchParams.get("state")
 
-    console.log('OAuth callback received:', {
+    console.log('🔍 [CALLBACK] OAuth callback received:', {
       url: request.url,
       code: code ? 'present' : 'missing',
       error: error || 'none',
@@ -21,10 +21,18 @@ export async function GET(request: NextRequest) {
         supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing'
       }
     })
+    
+    console.log('🔍 [CALLBACK] Full request details:', {
+      method: request.method,
+      headers: Object.fromEntries(request.headers.entries()),
+      url: request.url,
+      searchParams: Object.fromEntries(requestUrl.searchParams.entries())
+    })
 
     // Check for OAuth errors
     if (error) {
-      console.error('OAuth error received:', error)
+      console.error('🔍 [CALLBACK] OAuth error received:', error)
+      console.error('🔍 [CALLBACK] Redirecting to login with error:', `oauth_${error}`)
       return NextResponse.redirect(requestUrl.origin + `/auth/login?error=oauth_${error}`)
     }
 
@@ -57,15 +65,22 @@ export async function GET(request: NextRequest) {
         }
       )
 
-      console.log('Attempting to exchange code for session...')
+      console.log('🔍 [CALLBACK] Attempting to exchange code for session...')
+      console.log('🔍 [CALLBACK] Code to exchange:', code)
+      
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
       
       if (exchangeError) {
-        console.error('OAuth callback error:', exchangeError)
+        console.error('🔍 [CALLBACK] OAuth callback error:', exchangeError)
+        console.error('🔍 [CALLBACK] Exchange failed, redirecting to login')
         return NextResponse.redirect(requestUrl.origin + `/auth/login?error=exchange_failed&details=${encodeURIComponent(exchangeError.message)}`)
       }
       
-      console.log('OAuth callback: Session established successfully', { user: data.user?.id })
+      console.log('🔍 [CALLBACK] OAuth callback: Session established successfully', { 
+        user: data.user?.id,
+        session: !!data.session,
+        userEmail: data.user?.email
+      })
     } else {
       console.error('No code received in OAuth callback. Full URL:', request.url)
       console.error('Search params:', Object.fromEntries(requestUrl.searchParams.entries()))
