@@ -35,12 +35,26 @@ export default function LoginPage() {
     setError('')
     setEmailLoading(true)
 
+    console.log('📝 Form submitted with data:', {
+      email: formData.email,
+      password: formData.password,
+      passwordLength: formData.password.length,
+      hasEmail: !!formData.email,
+      hasPassword: !!formData.password
+    })
+
     try {
       // Basic validation
       if (!formData.email || !formData.password) {
         setError('All fields are required')
         return
       }
+
+      console.log('🔐 Login attempt with:', {
+        email: formData.email,
+        passwordLength: formData.password.length,
+        hasPassword: !!formData.password
+      })
 
       const result = await AuthService.login(formData)
       
