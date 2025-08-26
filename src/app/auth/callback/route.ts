@@ -71,8 +71,23 @@ export async function GET(request: NextRequest) {
     
     if (!error && data?.session) {
       console.log('✅ OAuth success, redirecting to dashboard')
-      // Successfully authenticated, redirect to dashboard
-      return NextResponse.redirect(`${origin}${next}`)
+      // Successfully authenticated, redirect to dashboard with cookies
+      const redirectResponse = NextResponse.redirect(`${origin}${next}`)
+      
+      // Copy all cookies from supabaseResponse to the redirect response
+      supabaseResponse.cookies.getAll().forEach(cookie => {
+        redirectResponse.cookies.set(cookie.name, cookie.value, {
+          path: cookie.path,
+          domain: cookie.domain,
+          secure: cookie.secure,
+          httpOnly: cookie.httpOnly,
+          sameSite: cookie.sameSite,
+          maxAge: cookie.maxAge,
+          expires: cookie.expires
+        })
+      })
+      
+      return redirectResponse
     } else {
       console.log('❌ OAuth failed:', error?.message)
     }
