@@ -62,7 +62,8 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      * - auth/callback (OAuth callback route)
+     * - auth/login and auth/register (allow access to auth pages)
      */
-    '/((?!_next/static|_next/image|favicon.ico|public|auth/callback).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public|auth/callback|auth/login|auth/register).*)',
   ],
 }
