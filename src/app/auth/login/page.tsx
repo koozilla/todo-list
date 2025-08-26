@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { refreshUser } = useAuth()
+  const { refreshUser, user } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -48,7 +48,11 @@ export default function LoginPage() {
         console.log('Login successful, refreshing user data...')
         // Refresh user data in AuthContext after successful login
         await refreshUser()
-        console.log('User data refreshed, reloading page for middleware redirect...')
+        
+        // Add a small delay to ensure session is established
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        console.log('Login successful! Session established, reloading for middleware redirect...')
         // Reload the page so middleware can see the new session and redirect
         window.location.reload()
       } else {
