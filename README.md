@@ -242,26 +242,42 @@ src/
 │   ├── auth.ts                     # Authentication service (Email + OAuth)
 │   ├── supabase.ts                 # Supabase client configuration
 │   └── tasks.ts                    # Task management API
+├── middleware.ts                   # Authentication middleware
 ├── types/                          # TypeScript type definitions
 │   └── index.ts                    # Application types and interfaces
 └── globals.css                     # Global styles and Tailwind CSS
 
 scripts/                             # Development and testing utilities
-├── test-supabase-env.js            # Supabase environment testing
+├── create-test-user.js             # Create/verify test user accounts
+├── test-oauth.js                   # Test Google OAuth configuration
+├── test-prod-auth.js               # Test production authentication
+├── test-supabase-env.js            # Test Supabase environment setup
 └── README.md                       # Scripts documentation
 
 public/                              # Static assets
 ├── favicon.ico                     # Application favicon
-└── *.svg                          # Various SVG assets
+├── file.svg                        # File icon
+├── globe.svg                       # Globe icon
+├── next.svg                        # Next.js logo
+├── vercel.svg                      # Vercel logo
+└── window.svg                      # Window icon
 
 Configuration Files:
 ├── .env.local                      # Local environment variables
 ├── .env.production                 # Production environment variables
-├── tailwind.config.js              # Tailwind CSS configuration
+├── eslint.config.mjs               # ESLint configuration
 ├── next.config.js                  # Next.js configuration
+├── postcss.config.js               # PostCSS configuration
+├── postcss.config.mjs              # PostCSS configuration (ESM)
+├── tailwind.config.js              # Tailwind CSS configuration
 ├── tsconfig.json                   # TypeScript configuration
-├── package.json                     # Dependencies and scripts
+├── package.json                    # Dependencies and scripts
+├── package-lock.json               # NPM lock file
 └── database-setup.sql              # Database schema setup
+
+Documentation:
+├── README.md                       # Main project documentation
+└── DEVELOPMENT_JOURNEY.md          # Development process documentation
 ```
 
 ## 🔧 Recent Fixes & Improvements ✅
