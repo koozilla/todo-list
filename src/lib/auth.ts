@@ -1,5 +1,14 @@
 import { supabase } from './supabase'
+import { createBrowserClient } from '@supabase/ssr'
 import { User } from '@/types'
+
+// Create a browser client for authentication that properly handles cookies
+const getBrowserClient = () => {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 export interface AuthResponse {
   success: boolean
@@ -132,7 +141,9 @@ export class AuthService {
         hasPassword: !!credentials.password
       })
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Use browser client for proper cookie handling
+      const browserClient = getBrowserClient()
+      const { data, error } = await browserClient.auth.signInWithPassword({
         email: credentials.email,
         password: credentials.password
       })
@@ -180,7 +191,9 @@ export class AuthService {
   // Sign out current user
   static async signOut(): Promise<AuthResponse> {
     try {
-      const { error } = await supabase.auth.signOut()
+      // Use browser client for proper cookie handling
+      const browserClient = getBrowserClient()
+      const { error } = await browserClient.auth.signOut()
       
       if (error) {
         return {
@@ -203,7 +216,9 @@ export class AuthService {
   // Get current authenticated user
   static async getCurrentUser(): Promise<User | null> {
     try {
-      const { data: { user }, error } = await supabase.auth.getUser()
+      // Use browser client for proper cookie handling
+      const browserClient = getBrowserClient()
+      const { data: { user }, error } = await browserClient.auth.getUser()
       
       if (error || !user) {
         return null
