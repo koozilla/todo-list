@@ -1,11 +1,21 @@
 import { supabase } from './supabase'
+import { createBrowserClient } from '@supabase/ssr'
 import { Task, CreateTaskInput, UpdateTaskInput, TaskFilter } from '@/types'
+
+// Create a browser client for proper cookie handling
+const getBrowserClient = () => {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 export class TaskService {
   // Create a new task
   static async createTask(taskData: CreateTaskInput): Promise<Task | null> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { data, error } = await supabase
@@ -28,7 +38,8 @@ export class TaskService {
   // Get all tasks for the current user
   static async getTasks(filter: TaskFilter = 'all'): Promise<Task[]> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       console.log('Getting tasks for user:', user.id, 'with filter:', filter)
@@ -68,7 +79,8 @@ export class TaskService {
     sortDirection: 'asc' | 'desc' = 'desc'
   ): Promise<Task[]> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       console.log('Getting tasks with advanced options:', { filter, searchQuery, sortBy, sortDirection })
@@ -108,7 +120,8 @@ export class TaskService {
   // Get a single task by ID
   static async getTask(id: string): Promise<Task | null> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { data, error } = await supabase
@@ -129,7 +142,8 @@ export class TaskService {
   // Update a task
   static async updateTask(id: string, updates: UpdateTaskInput): Promise<Task | null> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { data, error } = await supabase
@@ -151,7 +165,8 @@ export class TaskService {
   // Delete a task
   static async deleteTask(id: string): Promise<boolean> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const browserClient = getBrowserClient()
+      const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { error } = await supabase
