@@ -44,7 +44,7 @@ async function testSupabaseEnv() {
   
   console.log('📋 Environment Variables:')
   console.log('✅ Supabase URL:', supabaseUrl || '❌ MISSING')
-  console.log('✅ Supabase Key:', supabaseKey ? `${supabaseKey.substring(0, 20)}...` : '❌ MISSING')
+  console.log('✅ Supabase Key:', supabaseKey ? '***' + supabaseKey.substring(supabaseKey.length - 4) : '❌ MISSING')
   console.log('✅ Key Length:', supabaseKey ? supabaseKey.length : 'N/A')
   
   if (!supabaseUrl || !supabaseKey) {
