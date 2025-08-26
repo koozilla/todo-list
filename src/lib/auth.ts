@@ -35,17 +35,15 @@ export class AuthService {
       if (typeof window === 'undefined') {
         throw new Error('This function must be called in the browser')
       }
-      
-      // Check if supabase is available
-      if (typeof supabase === 'undefined') {
-        throw new Error('Supabase client is not available')
-      }
+
+      // Use browser client for proper cookie handling
+      const browserClient = getBrowserClient()
 
       // Let Supabase handle the OAuth flow completely
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await browserClient.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Don't specify redirectTo - let Supabase use its default
+          redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -92,7 +90,8 @@ export class AuthService {
         }
       }
 
-      const { data, error } = await supabase.auth.signUp({
+      const browserClient = getBrowserClient()
+      const { data, error } = await browserClient.auth.signUp({
         email: credentials.email,
         password: credentials.password,
         options: {
@@ -230,7 +229,8 @@ export class AuthService {
   // Reset password
   static async resetPassword(email: string): Promise<AuthResponse> {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const browserClient = getBrowserClient()
+      const { error } = await browserClient.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`
       })
 
