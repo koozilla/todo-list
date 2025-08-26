@@ -31,11 +31,6 @@ export async function middleware(request: NextRequest) {
 
   // Refresh session if expired - required for Server Components
   const { data: { user } } = await supabase.auth.getUser()
-  
-  // Debug alerts (only for auth/login page)
-  if (request.nextUrl.pathname === '/auth/login') {
-    // We can't use alert in middleware, so we'll add it to the login page instead
-  }
 
   // If user is not authenticated and trying to access protected routes
   if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
@@ -43,9 +38,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // If user is authenticated and trying to access auth pages, redirect to dashboard
+  // If user is authenticated and trying to access auth pages, redirect to root page
   if (user && (request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/register'))) {
-    const redirectUrl = new URL('/dashboard', request.url)
+    const redirectUrl = new URL('/', request.url)
     return NextResponse.redirect(redirectUrl)
   }
 
