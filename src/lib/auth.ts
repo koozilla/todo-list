@@ -22,36 +22,37 @@ export class AuthService {
   // Google OAuth login
   static async signInWithGoogle(): Promise<AuthResponse> {
     try {
-      // Get the correct URL for the current environment
-      const getRedirectURL = () => {
-        // Always use window.location.origin for local development
-        // This ensures we use the correct localhost port
-        return `${window.location.origin}/auth/callback`
+      console.log('🔍 [AUTH] signInWithGoogle called')
+      
+      // Check if we're in browser environment
+      if (typeof window === 'undefined') {
+        throw new Error('This function must be called in the browser')
       }
-
-      const redirectURL = getRedirectURL()
+      
+      // Check if supabase is available
+      if (typeof supabase === 'undefined') {
+        throw new Error('Supabase client is not available')
+      }
+      
+      console.log('🔍 [AUTH] Supabase client available:', !!supabase)
+      console.log('🔍 [AUTH] Supabase auth available:', !!supabase.auth)
+      
+      // Use Supabase's default OAuth redirect handling
+      // This will redirect to Supabase's OAuth endpoint, not our custom callback
       console.log('🔍 [AUTH] Starting Google OAuth flow...')
       console.log('🔍 [AUTH] Current origin:', window.location.origin)
-      console.log('🔍 [AUTH] OAuth redirect URL:', redirectURL)
       console.log('🔍 [AUTH] Supabase client config:', {
         url: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
         hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       })
 
-      // Force the redirect URL by using the full URL
-      console.log('🔍 [AUTH] Calling Supabase signInWithOAuth with options:', {
-        provider: 'google',
-        redirectTo: redirectURL,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        }
-      })
+      // Let Supabase handle the OAuth flow completely
+      console.log('🔍 [AUTH] Calling Supabase signInWithOAuth...')
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: redirectURL,
+          // Don't specify redirectTo - let Supabase use its default
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -69,7 +70,7 @@ export class AuthService {
       }
 
       // For OAuth, we don't get the user immediately
-      // The user will be redirected to the callback URL
+      // The user will be redirected to Supabase's OAuth endpoint
       return {
         success: true
       }

@@ -5,23 +5,46 @@ import { AuthService } from '@/lib/auth'
 import Logo from '@/components/ui/Logo'
 import Link from 'next/link'
 
+// Debug imports
+console.log('🔍 [LOGIN] Page loading...')
+console.log('🔍 [LOGIN] AuthService import:', typeof AuthService)
+console.log('🔍 [LOGIN] Logo import:', typeof Logo)
+console.log('🔍 [LOGIN] Link import:', typeof Link)
+
 export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
 
   const handleGoogleSignIn = async () => {
+    console.log('🔍 [LOGIN] Google sign-in button clicked')
     setGoogleLoading(true)
 
     try {
+      // Check if AuthService is available
+      if (typeof AuthService === 'undefined') {
+        throw new Error('AuthService is not defined')
+      }
+      
+      console.log('🔍 [LOGIN] AuthService available:', !!AuthService)
+      console.log('🔍 [LOGIN] AuthService.signInWithGoogle available:', !!AuthService.signInWithGoogle)
+      
+      console.log('🔍 [LOGIN] Calling AuthService.signInWithGoogle()...')
       const result = await AuthService.signInWithGoogle()
+      console.log('🔍 [LOGIN] AuthService result:', result)
       
       if (result.success) {
+        console.log('🔍 [LOGIN] OAuth flow started successfully')
         // The redirect will happen automatically via Supabase
         // No need to show message since redirect is immediate
       } else {
-        console.error('Google sign-in failed:', result.error)
+        console.error('🔍 [LOGIN] Google sign-in failed:', result.error)
       }
     } catch (error) {
-      console.error('An unexpected error occurred:', error)
+      console.error('🔍 [LOGIN] An unexpected error occurred:', error)
+      console.error('🔍 [LOGIN] Error details:', {
+        name: error?.name,
+        message: error?.message,
+        stack: error?.stack
+      })
     } finally {
       setGoogleLoading(false)
     }
