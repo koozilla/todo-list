@@ -50,6 +50,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
+  // Allow unauthenticated users to access the home page
+  if (!user && request.nextUrl.pathname === '/') {
+    return supabaseResponse
+  }
+
   return supabaseResponse
 }
 
