@@ -21,14 +21,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refreshUser = async () => {
     try {
       console.log('AuthContext: Refreshing user...')
+      setLoading(true)
       const currentUser = await AuthService.getCurrentUser()
       console.log('AuthContext: User refresh result:', currentUser)
       setUser(currentUser)
+      console.log('AuthContext: User state updated to:', currentUser?.email || 'null')
     } catch (error) {
       console.error('AuthContext: Error refreshing user:', error)
       setUser(null)
     } finally {
       setLoading(false)
+      console.log('AuthContext: Loading set to false')
     }
   }
 
@@ -37,7 +40,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await AuthService.signOut()
       if (result.success) {
         setUser(null)
-        window.location.href = '/'
+        // Use Next.js router for consistent navigation
+        if (typeof window !== 'undefined') {
+          window.location.href = '/'
+        }
       } else {
         console.error('Sign out error:', result.error)
       }

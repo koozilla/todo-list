@@ -4,8 +4,12 @@ import { useState } from 'react'
 import { AuthService } from '@/lib/auth'
 import Logo from '@/components/ui/Logo'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const { refreshUser } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -39,8 +43,12 @@ export default function LoginPage() {
       const result = await AuthService.login(formData)
       
       if (result.success) {
-        // Redirect to dashboard on successful login
-        window.location.href = '/dashboard'
+        // Refresh user data in AuthContext after successful login
+        await refreshUser()
+        // Small delay to ensure session is fully established
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 100)
       } else {
         setError(result.error || 'Login failed')
       }
