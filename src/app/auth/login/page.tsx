@@ -17,7 +17,8 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [emailLoading, setEmailLoading] = useState(false)
   const [error, setError] = useState('')
-  const [loginSuccess, setLoginSuccess] = useState(false)
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -47,9 +48,9 @@ export default function LoginPage() {
         console.log('Login successful, refreshing user data...')
         // Refresh user data in AuthContext after successful login
         await refreshUser()
-        console.log('User data refreshed, showing success message...')
-        // Show success message with Link to dashboard
-        setLoginSuccess(true)
+        console.log('User data refreshed, reloading page for middleware redirect...')
+        // Reload the page so middleware can see the new session and redirect
+        window.location.reload()
       } else {
         setError(result.error || 'Login failed')
       }
@@ -127,23 +128,7 @@ export default function LoginPage() {
 
           {/* Login Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
-            {/* Success Message */}
-            {loginSuccess && (
-              <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                <p className="text-green-700 dark:text-green-400 text-sm mb-3">
-                  Login successful! You can now access your dashboard.
-                </p>
-                <button
-                  onClick={() => {
-                    console.log('Dashboard button clicked, navigating...')
-                    router.push('/dashboard')
-                  }}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200"
-                >
-                  Go to Dashboard
-                </button>
-              </div>
-            )}
+
 
             {/* Error Messages */}
             {error && (

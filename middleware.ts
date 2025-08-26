@@ -38,9 +38,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // If user is authenticated and trying to access auth pages, redirect to dashboard
+  // If user is authenticated and trying to access auth pages, redirect to root page
   if (user && (request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/register'))) {
-    const redirectUrl = new URL('/dashboard', request.url)
+    const redirectUrl = new URL('/', request.url)
     return NextResponse.redirect(redirectUrl)
   }
 
@@ -61,8 +61,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Only apply middleware to dashboard routes
+     * Apply middleware to all routes that need authentication handling
      */
     '/dashboard/:path*',
+    '/auth/:path*',
+    '/',
   ],
 }
