@@ -1,4 +1,3 @@
-import { supabase } from './supabase'
 import { createBrowserClient } from '@supabase/ssr'
 import { Task, CreateTaskInput, UpdateTaskInput, TaskFilter } from '@/types'
 

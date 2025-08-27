@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { TaskFilter } from '@/types'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import CreateTaskForm from '@/components/tasks/CreateTaskForm'
 import TaskList from '@/components/tasks/TaskList'
@@ -37,6 +36,13 @@ export default function DashboardPage() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // Redirect to home page if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/')
+    }
+  }, [loading, user, router])
 
   // handleSignOut is now provided by AuthContext
 
@@ -85,9 +91,6 @@ export default function DashboardPage() {
 
   if (!user) {
     // Redirect to home page instead of showing "Not Authenticated" page
-    useEffect(() => {
-      router.push('/')
-    }, [router])
     return null
   }
 
