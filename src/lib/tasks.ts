@@ -153,7 +153,7 @@ export class TaskService {
       // Prepare update data, handling empty date strings
       const updateData: Record<string, string | boolean | null> = { ...updates }
       if (updateData.due_date !== undefined) {
-        updateData.due_date = updateData.due_date && updateData.due_date.trim() !== '' ? updateData.due_date : null
+        updateData.due_date = updateData.due_date && typeof updateData.due_date === 'string' && updateData.due_date.trim() !== '' ? updateData.due_date : null
       }
       if (updateData.description !== undefined) {
         updateData.description = updateData.description || null
