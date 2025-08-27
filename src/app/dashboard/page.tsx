@@ -116,35 +116,41 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Gmail-Style Header */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Left side - Logo */}
-            <div className="flex items-center space-x-6 flex-1">
+            <div className="flex items-center flex-1 min-w-0">
               <Logo size="sm" />
             </div>
 
             {/* Right side - Actions and User */}
-            <div className="flex items-center space-x-4">
-              {/* Search Button */}
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              {/* Search Button - Icon only on mobile */}
               <button
                 onClick={toggleSearch}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                className="inline-flex items-center px-2 sm:px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                title={showSearch ? 'Hide Search' : 'Search'}
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                {showSearch ? 'Hide Search' : 'Search'}
+                <span className="hidden sm:inline">
+                  {showSearch ? 'Hide Search' : 'Search'}
+                </span>
               </button>
 
-              {/* Create Task Button */}
+              {/* Create Task Button - Icon only on mobile */}
               <button
                 onClick={() => setShowCreateForm(!showCreateForm)}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                className="inline-flex items-center px-2 sm:px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                title={showCreateForm ? 'Cancel' : 'New Task'}
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                {showCreateForm ? 'Cancel' : 'New Task'}
+                <span className="hidden sm:inline">
+                  {showCreateForm ? 'Cancel' : 'New Task'}
+                </span>
               </button>
 
               {/* Theme Toggle */}
@@ -154,17 +160,17 @@ export default function DashboardPage() {
               <div className="relative user-menu">
                 <button 
                   onClick={toggleUserMenu}
-                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  className="flex items-center space-x-1 sm:space-x-2 p-1 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                 >
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-medium">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs sm:text-sm font-medium">
                       {userInitial}
                     </span>
                   </div>
-                  <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {userName}
                   </span>
-                  <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-3 h-3 sm:w-4 sm:h-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -173,7 +179,7 @@ export default function DashboardPage() {
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{userEmail}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{userEmail}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Signed in</p>
                     </div>
                     <button
@@ -191,7 +197,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Search Bar (shown when search mode is active) */}
         {showSearch && (
           <div className="mb-6">
@@ -212,15 +218,15 @@ export default function DashboardPage() {
         )}
 
         {/* Controls Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4 mb-6">
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             {/* Filter Tabs - Always visible */}
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 overflow-x-auto">
               {(['pending', 'completed', 'all'] as TaskFilter[]).map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  className={`px-3 sm:px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 whitespace-nowrap ${
                     activeFilter === filter
                       ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'

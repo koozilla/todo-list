@@ -181,7 +181,7 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
     <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 mb-4 transition-all duration-200 hover:shadow-xl ${
       task.is_completed ? 'opacity-75' : ''
     } ${isOverdue ? 'border-red-300 dark:border-red-600 bg-red-50/50 dark:bg-red-900/10' : ''}`}>
-      <div className="flex items-start space-x-4">
+      <div className="flex items-start space-x-3 sm:space-x-4">
         {/* Checkbox */}
         <div className="flex-shrink-0 pt-1">
           <input
@@ -194,9 +194,9 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
 
         {/* Task Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h3 className={`text-lg font-semibold mb-2 ${
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className={`text-base sm:text-lg font-semibold mb-2 ${
                 task.is_completed 
                   ? 'text-gray-500 dark:text-gray-400 line-through' 
                   : 'text-gray-900 dark:text-white'
@@ -205,14 +205,14 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
               </h3>
               
               {task.description && (
-                <p className={`text-gray-600 dark:text-gray-300 mb-3 ${
+                <p className={`text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 ${
                   task.is_completed ? 'line-through' : ''
                 }`}>
                   {task.description}
                 </p>
               )}
 
-              <div className="flex items-center space-x-4 text-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                 {task.due_date && (
                   <div className="flex items-center space-x-2">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,30 +239,30 @@ export default function TaskItem({ task, onTaskUpdated, onTaskDeleted }: TaskIte
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={handleEdit}
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all duration-200"
-            title="Edit task"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={handleDelete}
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-200"
-            title="Delete task"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </button>
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-1 sm:space-x-2 self-end sm:self-start">
+              <button
+                onClick={handleEdit}
+                className="p-2 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all duration-200 min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
+                title="Edit task"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={handleDelete}
+                className="p-2 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-200 min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
+                title="Delete task"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
