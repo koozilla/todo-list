@@ -18,7 +18,7 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
-      const { data, error } = await supabase
+      const { data, error } = await browserClient
         .from('tasks')
         .insert({
           ...taskData,
@@ -44,7 +44,7 @@ export class TaskService {
 
       console.log('Getting tasks for user:', user.id, 'with filter:', filter)
 
-      let query = supabase
+      let query = browserClient
         .from('tasks')
         .select('*')
         .eq('user_id', user.id)
@@ -85,7 +85,7 @@ export class TaskService {
 
       console.log('Getting tasks with advanced options:', { filter, searchQuery, sortBy, sortDirection })
 
-      let query = supabase
+      let query = browserClient
         .from('tasks')
         .select('*')
         .eq('user_id', user.id)
@@ -124,7 +124,7 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
-      const { data, error } = await supabase
+      const { data, error } = await browserClient
         .from('tasks')
         .select('*')
         .eq('id', id)
@@ -146,7 +146,7 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
-      const { data, error } = await supabase
+      const { data, error } = await browserClient
         .from('tasks')
         .update(updates)
         .eq('id', id)
@@ -169,7 +169,7 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
-      const { error } = await supabase
+      const { error } = await browserClient
         .from('tasks')
         .delete()
         .eq('id', id)
