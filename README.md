@@ -14,7 +14,7 @@ A modern, secure Todo List application built with Next.js, Tailwind CSS, and Sup
 ### Task Management
 - **Create Tasks** with title, optional description, and due date
 - **Edit Tasks** - modify any field of existing tasks
-- **Complete Tasks** - mark tasks as done with boolean toggle
+- **Complete Tasksts** - mark tasks as done with boolean toggle
 - **Delete Tasks** - remove tasks from your list
 - **Task Organization** - view All, Pending, or Completed tasks
 - **Smart Sorting** - sort by creation date, due date, or completion status
