@@ -1,18 +1,20 @@
 import React from 'react'
+import Link from 'next/link'
 
 interface LogoProps {
   className?: string
   size?: 'sm' | 'md' | 'lg'
+  linkToHome?: boolean
 }
 
-export default function Logo({ className = '', size = 'md' }: LogoProps) {
+export default function Logo({ className = '', size = 'md', linkToHome = false }: LogoProps) {
   const sizeClasses = {
     sm: 'h-6 w-6',
     md: 'h-8 w-8',
     lg: 'h-12 w-12'
   }
 
-  return (
+  const logoContent = (
     <div className={`flex items-center space-x-2 ${className}`}>
       <div className={`${sizeClasses[size]} relative`}>
         <svg
@@ -45,4 +47,14 @@ export default function Logo({ className = '', size = 'md' }: LogoProps) {
       </span>
     </div>
   )
+
+  if (linkToHome) {
+    return (
+      <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+        {logoContent}
+      </Link>
+    )
+  }
+
+  return logoContent
 }

@@ -93,7 +93,7 @@ export default function RegisterPage() {
       <nav className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
           <div className="flex justify-between items-center h-20">
-            <Logo size="md" />
+            <Logo size="md" linkToHome={true} />
             <div className="flex items-center space-x-4">
               <Link
                 href="/auth/login"
@@ -101,12 +101,7 @@ export default function RegisterPage() {
               >
                 Sign In
               </Link>
-              <Link
-                href="/"
-                className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full transition-all duration-200"
-              >
-                Home
-              </Link>
+
             </div>
           </div>
         </div>

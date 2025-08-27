@@ -120,7 +120,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Left side - Logo */}
             <div className="flex items-center flex-1 min-w-0">
-              <Logo size="sm" />
+              <Logo size="sm" linkToHome={true} />
             </div>
 
             {/* Right side - Actions and User */}
