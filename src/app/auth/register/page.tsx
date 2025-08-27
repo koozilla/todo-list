@@ -96,6 +96,12 @@ export default function RegisterPage() {
             <Logo size="md" linkToHome={true} />
             <div className="flex items-center space-x-4">
               <Link
+                href="/"
+                className="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-all duration-200"
+              >
+                Home
+              </Link>
+              <Link
                 href="/auth/login"
                 className="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-all duration-200"
               >
