@@ -98,6 +98,12 @@ export default function LoginPage() {
             <Logo size="md" linkToHome={true} />
             <div className="flex items-center space-x-4">
               <Link
+                href="/"
+                className="inline-flex items-center px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-full transition-all duration-200"
+              >
+                Home
+              </Link>
+              <Link
                 href="/auth/register"
                 className="hidden sm:inline-flex px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full transition-all duration-200"
               >
@@ -174,7 +180,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={emailLoading}
-                className="w-full mt-6 px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:transform-none min-h-[48px] flex items-center justify-center"
+                className="w-full mt-6 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:transform-none min-h-[40px] sm:min-h-[48px] flex items-center justify-center"
               >
                 {emailLoading ? (
                   <>
@@ -205,7 +211,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={googleLoading}
-              className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 disabled:border-gray-200 dark:disabled:border-gray-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 disabled:cursor-not-allowed disabled:transform-none min-h-[48px]"
+              className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 disabled:border-gray-200 dark:disabled:border-gray-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 disabled:cursor-not-allowed disabled:transform-none min-h-[40px] sm:min-h-[48px]"
             >
               {googleLoading ? (
                 <>
