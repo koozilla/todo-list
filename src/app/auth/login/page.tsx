@@ -98,12 +98,6 @@ export default function LoginPage() {
             <Logo size="md" linkToHome={true} />
             <div className="flex items-center space-x-4">
               <Link
-                href="/"
-                className="inline-flex items-center px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full transition-all duration-200"
-              >
-                Home
-              </Link>
-              <Link
                 href="/auth/register"
                 className="hidden sm:inline-flex px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full transition-all duration-200"
               >
