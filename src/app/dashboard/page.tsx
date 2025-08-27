@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { TaskFilter } from '@/types'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import CreateTaskForm from '@/components/tasks/CreateTaskForm'
 import TaskList from '@/components/tasks/TaskList'
 import TaskSearch from '@/components/tasks/TaskSearch'
@@ -13,6 +14,7 @@ import { useAuth } from '@/contexts/AuthContext'
 
 export default function DashboardPage() {
   const { user, loading, signOut } = useAuth()
+  const router = useRouter()
   const [activeFilter, setActiveFilter] = useState<TaskFilter>('pending')
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -82,29 +84,11 @@ export default function DashboardPage() {
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-6">
-          <Logo size="lg" className="mx-auto mb-8" />
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Not Authenticated</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">Please sign in to access your dashboard.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 transition-all duration-200"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/register"
-              className="inline-flex items-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-base font-medium rounded-md shadow-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition-all duration-200"
-            >
-              Create Account
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+    // Redirect to home page instead of showing "Not Authenticated" page
+    useEffect(() => {
+      router.push('/')
+    }, [router])
+    return null
   }
 
   // Safety check for user properties
