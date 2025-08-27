@@ -52,38 +52,37 @@ export async function middleware(request: NextRequest) {
 
   // This will refresh the session cookie on every request, keeping the user logged in
   console.log('🔄 Refreshing session...')
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
   
-  console.log('👤 Session status:', {
-    hasSession: !!session,
-    hasUser: !!session?.user,
-    userEmail: session?.user?.email,
-    sessionError: sessionError?.message
+  console.log('👤 User status:', {
+    hasUser: !!user,
+    userEmail: user?.email,
+    userError: userError?.message
   })
 
   // If user is not authenticated and trying to access protected routes
-  if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
+  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
     console.log('🚫 Redirecting unauthenticated user from dashboard to login')
     const redirectUrl = new URL('/auth/login', request.url)
     return NextResponse.redirect(redirectUrl)
   }
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (session && (request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/register'))) {
+  if (user && (request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/register'))) {
     console.log('🔄 Redirecting authenticated user from auth page to dashboard')
     const redirectUrl = new URL('/dashboard', request.url)
     return NextResponse.redirect(redirectUrl)
   }
 
   // If user is authenticated and visiting the home page, redirect to dashboard
-  if (session && request.nextUrl.pathname === '/') {
+  if (user && request.nextUrl.pathname === '/') {
     console.log('🔄 Redirecting authenticated user from home to dashboard')
     const redirectUrl = new URL('/dashboard', request.url)
     return NextResponse.redirect(redirectUrl)
   }
 
   // Allow unauthenticated users to access the home page
-  if (!session && request.nextUrl.pathname === '/') {
+  if (!user && request.nextUrl.pathname === '/') {
     console.log('✅ Allowing unauthenticated access to home page')
     return supabaseResponse
   }

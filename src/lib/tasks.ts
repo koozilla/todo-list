@@ -17,12 +17,17 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
+      // Prepare data for insertion, handling empty date strings
+      const insertData = {
+        title: taskData.title,
+        description: taskData.description || null,
+        due_date: taskData.due_date && taskData.due_date.trim() !== '' ? taskData.due_date : null,
+        user_id: user.id
+      }
+
       const { data, error } = await browserClient
         .from('tasks')
-        .insert({
-          ...taskData,
-          user_id: user.id
-        })
+        .insert(insertData)
         .select()
         .single()
 
@@ -145,9 +150,18 @@ export class TaskService {
       const { data: { user } } = await browserClient.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
+      // Prepare update data, handling empty date strings
+      const updateData: any = { ...updates }
+      if (updateData.due_date !== undefined) {
+        updateData.due_date = updateData.due_date && updateData.due_date.trim() !== '' ? updateData.due_date : null
+      }
+      if (updateData.description !== undefined) {
+        updateData.description = updateData.description || null
+      }
+
       const { data, error } = await browserClient
         .from('tasks')
-        .update(updates)
+        .update(updateData)
         .eq('id', id)
         .eq('user_id', user.id)
         .select()
