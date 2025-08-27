@@ -151,7 +151,7 @@ export class TaskService {
       if (!user) throw new Error('User not authenticated')
 
       // Prepare update data, handling empty date strings
-      const updateData: any = { ...updates }
+      const updateData: Record<string, any> = { ...updates }
       if (updateData.due_date !== undefined) {
         updateData.due_date = updateData.due_date && updateData.due_date.trim() !== '' ? updateData.due_date : null
       }
