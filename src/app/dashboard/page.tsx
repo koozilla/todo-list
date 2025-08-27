@@ -153,8 +153,10 @@ export default function DashboardPage() {
                 </span>
               </button>
 
-              {/* Theme Toggle */}
-              <ThemeToggle />
+              {/* Theme Toggle - Hidden on mobile */}
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
 
               {/* User Menu */}
               <div className="relative user-menu">

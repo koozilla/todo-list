@@ -51,10 +51,9 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/auth/register"
-                className="px-3 sm:px-6 py-2 sm:py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+                className="hidden sm:inline-flex px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
               >
-                <span className="hidden sm:inline">Get Started</span>
-                <span className="sm:hidden">Sign Up</span>
+                Get Started
               </Link>
             </div>
           </div>
