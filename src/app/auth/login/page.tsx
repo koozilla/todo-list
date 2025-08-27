@@ -110,7 +110,7 @@ export default function LoginPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center px-6 py-20">
+      <div className="flex items-center justify-center px-6 py-8 sm:py-20">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
